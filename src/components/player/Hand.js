@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import Card from './Card'
+import Card from '../Card'
 
-import {API_URL} from '../paths'
+import {API_URL} from '../../paths'
 
 export class Hand extends Component {
     constructor(props){
@@ -15,7 +15,7 @@ export class Hand extends Component {
         this.playCard = this.playCard.bind(this)
     }
 
-    getCardsFromServer(){
+    async getCardsFromServer(){
         var url = new URL(API_URL)
         url.pathname += 'player/cards'
         var params = {'player_id': this.props.playerID}
@@ -23,18 +23,13 @@ export class Hand extends Component {
         Object.keys(params).forEach(key =>
           url.searchParams.append(key, params[key])
         )
-    
-        // fetch the url
-        // .then function chaining
-        fetch(url)
-          .then(res => res.json())
-          .then(res => {
-            this.setState(prevState => ({
-              ...prevState,
-              cards: res
-              }
-            ))
-          })
+        const response = await fetch(url)
+        const updatedCards= await response.json()
+        this.setState(prevState => ({
+          ...prevState,
+          cards: updatedCards
+          }
+        ))
       }
 
     async playCard(id) {
@@ -50,8 +45,6 @@ export class Hand extends Component {
       // var isPlayableCard = false
       const valid_card_response = await fetch(url, {method: 'POST'})
       const updatedCards= await valid_card_response.json()
-      console.log(updatedCards)
-      // isPlayableCard = await valid_card_response.json()
       this.setState(prevState => ({
         ...prevState,
         cards: updatedCards
@@ -72,7 +65,7 @@ export class Hand extends Component {
         var cards = Object.entries(this.state.cards).map(
             ([id, card]) => 
               <Card 
-                id={id}
+                id={card.id}
                 color={card.color} 
                 number={card.number}
                 onClick={this.playCard}
