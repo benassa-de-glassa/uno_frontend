@@ -8,7 +8,7 @@ export class Hand extends Component {
     constructor(props){
         super(props)
         this.state = {
-            cards:[],
+            cards:{},
         }
 
         this.getCardsFromServer = this.getCardsFromServer.bind(this)
@@ -37,23 +37,26 @@ export class Hand extends Component {
           })
       }
 
-    playCard(e, color, number) {
-        console.log(color, number)
-        var url = new URL(API_URL)
-        url.pathname += 'game/valid_card'
-        var params = {'color': color, 'number': number}
-        // create the correct request based on the type parameter
-        Object.keys(params).forEach(key =>
-          url.searchParams.append(key, params[key])
-        )
-        
-        // fetch the url
-        // .then function chaining
-        fetch(url)
-          .then(res => res.json())
-          .then(res => {
-            console.log(res)
-          })
+    async playCard(id) {
+      var url = new URL(API_URL)
+      url.pathname += 'game/valid_card'
+      var playCardParams = {'card_id': id}
+      // create the correct request based on the type parameter
+      Object.keys(playCardParams).forEach(key =>
+        url.searchParams.append(key, playCardParams[key])
+      )
+
+      // check with the backend whether we are allowed to play this card
+      // var isPlayableCard = false
+      const valid_card_response = await fetch(url, {method: 'POST'})
+      const updatedCards= await valid_card_response.json()
+      console.log(updatedCards)
+      // isPlayableCard = await valid_card_response.json()
+      this.setState(prevState => ({
+        ...prevState,
+        cards: updatedCards
+        }
+      ))      
     }
     
     componentDidMount(){
@@ -66,14 +69,14 @@ export class Hand extends Component {
     }
 
     render() {
-        const onClick = (event, color, number) => this.playCard(event, color, number)
-        var cards = this.state.cards.map(
-            card => 
-            <Card 
+        var cards = Object.entries(this.state.cards).map(
+            ([id, card]) => 
+              <Card 
+                id={id}
                 color={card.color} 
                 number={card.number}
-                onClick={onClick}
-            />
+                onClick={this.playCard}
+              />
         )
         return (
             <div className="hand">

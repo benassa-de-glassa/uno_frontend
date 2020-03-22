@@ -1,13 +1,24 @@
-.card {
+div.card {
   width: 80px;
   height: 150px;
   margin: 10px;
   padding-left: 10px;
   font-size: 30px;
-  color: #ffffff
+  color: #ffffff;
+  border-radius: 5%;
 }
 
-.hand {
+div.hand {
   display: inline-flex;
   float: left;
+}
+
+div.player {
+  background-color: darksalmon;
+  overflow: auto;
+  max-width: 600px;
+}
+
+button.uno {
+  float: right;
 }

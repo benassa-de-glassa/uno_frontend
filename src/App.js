@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Hand from './components/Hand';
+import Player from './components/Player';
 
 function App() {
   return (
     <div className="App">
-      <Hand playerID='1' />
+      <Player playerID='5' />
     </div>
   );
 }
