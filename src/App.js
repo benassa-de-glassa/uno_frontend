@@ -1,16 +1,32 @@
 import React from 'react';
 import './App.css';
 
-import Player from './components/player/Player'
-import Stacks from './components/stacks/Stacks'
+import PlayerProvider from './context/PlayerProvider'
 
-function App() {
+import UserRegistration from './components/user-registration/UserRegistration'
+import Stacks from './components/stacks/Stacks'
+import Player from './components/player/Player'
+
+function App () {
+  var state = {
+    player: {
+      id: 0,
+      name: 'test_name'
+    },
+    cards: []
+  }
+  
   return (
-    <div className="App">
-      <Stacks />
-      <Player playerID='5' />
-    </div>
-  );
+    <PlayerProvider value={state}>
+      <div className="App">
+        <UserRegistration />
+        <Stacks />
+        <Player />
+      </div>
+    </PlayerProvider>
+  )
 }
+
+
 
 export default App;
