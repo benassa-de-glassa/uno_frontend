@@ -5,7 +5,7 @@ export class Pile extends Component {
     constructor(props){
         super(props)
         this.state = {
-            topCard: undefined
+            topCard: {id:108, color: 'pink', number: -1}
         }
     }
 

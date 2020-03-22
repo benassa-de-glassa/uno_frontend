@@ -65,7 +65,7 @@ export class Hand extends Component {
         var cards = Object.entries(this.state.cards).map(
             ([id, card]) => 
               <Card 
-                id={card.id}
+                id={id}
                 color={card.color} 
                 number={card.number}
                 onClick={this.playCard}
