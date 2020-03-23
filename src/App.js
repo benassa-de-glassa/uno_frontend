@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import PlayerProvider from './context/PlayerProvider'
+
+import UserRegistration from './components/user-registration/UserRegistration'
+import Stacks from './components/stacks/Stacks'
+import Player from './components/player/Player'
+
+function App () {
+  var state = {
+    player: {
+      id: 0,
+      name: 'test_name'
+    },
+    cards: []
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <PlayerProvider value={state}>
+      <div className="App">
+        <UserRegistration />
+        <Stacks />
+        <Player />
+      </div>
+    </PlayerProvider>
+  )
 }
+
+
 
 export default App;
