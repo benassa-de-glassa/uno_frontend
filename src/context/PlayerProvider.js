@@ -20,6 +20,7 @@ class PlayerProvider extends Component {
     this.updateCards = this.updateCards.bind(this);
     this.playBlackCard = this.playBlackCard.bind(this);
     this.playCard = this.playCard.bind(this);
+    this.pickupCard = this.pickupCard.bind(this);
     this.chooseColor = this.chooseColor.bind(this);
   }
 
@@ -79,6 +80,19 @@ class PlayerProvider extends Component {
       this.props.updateActivePlayer()
   }
 
+  async pickupCard() {
+    var url = new URL(API_URL);
+    url.pathname += "game/pickup_card" 
+    url.searchParams.append("player_id", this.state.player.id)
+    const response = await fetch(url, {method:'POST'})
+    response.json()
+      .then( d => { console.log(d) } )
+    
+      this.updateCards()
+      this.props.updateTopCard()
+      this.props.updateActivePlayer()
+  }
+
   async chooseColor (color) {
     var url = new URL(API_URL);
     url.pathname += "game/choose_color" 
@@ -102,7 +116,8 @@ class PlayerProvider extends Component {
           },
           playCard: this.playCard,
           playBlackCard: this.playBlackCard,
-          chooseColor: this.chooseColor
+          chooseColor: this.chooseColor,
+          pickupCard: this.pickupCard
         }}
       >     
         {this.props.children}

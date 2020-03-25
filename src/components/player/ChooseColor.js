@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button } from 'react-bootstrap'
+import { Button, ButtonGroup } from 'react-bootstrap'
 
 import PlayerContext from '../../context/PlayerContext';
 
@@ -9,14 +9,17 @@ function ChooseColor() {
         <PlayerContext.Consumer>
             { (value) => 
             <div>
-            { value.state.canChooseColor &&
+            {  value.state.canChooseColor &&
                 <div>
-                <Button 
-                    className="deal" 
-                    onClick = { value.dealInitialCards }
-                >
-                    Give me cards
-                </Button>
+                <p>Choose color:</p>
+                <ButtonGroup>
+                <Button style={{backgroundColor: "red"}} onClick={ () => value.chooseColor("red")}
+                >Red</Button>
+                <Button style={{backgroundColor: "green"}} onClick={ () => value.chooseColor("green")}>Green</Button>
+                <Button style={{backgroundColor: "blue"}} onClick={ () =>value.chooseColor("blue")}>Blue</Button>
+                <Button style={{backgroundColor: "yellow", color: "black"}} onClick={ () => value.chooseColor("yellow")}>Yellow</Button>
+                <Button style={{backgroundColor: "orange"}} onClick={ () => alert("nice try, Lara") }>Abricot</Button>
+                </ButtonGroup>
                 </div>
             }
             </div>

@@ -22,3 +22,8 @@ div.player {
 button.uno {
   float: right;
 }
+
+btn-red {
+  background: red;
+  color: red
+}

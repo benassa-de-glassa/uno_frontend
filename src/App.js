@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 
-
 import PlayerProvider from './context/PlayerProvider'
 
 import UserRegistration from './components/user-registration/UserRegistration'

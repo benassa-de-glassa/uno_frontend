@@ -13,7 +13,7 @@ export class Deck extends Component {
       <PlayerContext.Consumer>
         { context =>
           <div className="card" id="turnedcard" style={{background: "black"}}
-            onClick={ () => console.log("deck clicked") }
+            onClick={ context.pickupCard }
           >
               <img src={unologo} alt="" width="80%" style={{marginTop: "60%", marginLeft: "5%"}}/>
           </div>
