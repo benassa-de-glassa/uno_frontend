@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, FormGroup, Form, FormControl, FormLabel } from 'react-bootstrap'
 
 import PlayerContext from '../../context/PlayerContext';
 
@@ -9,9 +9,10 @@ import {API_URL} from '../../paths'
 export class UserRegistration extends Component {
   constructor(props) {
     super(props);
+
+    this.props = props;
     this.state = { 
-      value: "",
-      loggedIn: true };
+      value: "",};
     
     this.hideComponent= this.hideComponent.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -37,7 +38,7 @@ export class UserRegistration extends Component {
       )
     }
 
-    this.setState( {show: false} );
+    this.props.playerLoggedIn();
     
     const response = await fetch(url, {method:'POST'})
     return await response.json()
@@ -45,32 +46,39 @@ export class UserRegistration extends Component {
 
   render() {
     return (
-      <PlayerContext.Consumer> 
-        {context =>
-<div>
-{ this.state.loggedIn && 
-  <form onSubmit={e => context.updateUser(this.handleSubmit(e, context))}>
-    <div className="form-group">
-      <label htmlFor="usr">Name:</label>
-      <input type="text" className="form-control" id="usr" value={this.state.value} 
-                onChange={this.handleChange} />
-      <div className="input-group-btn">
-        <button type="submit" className="btn btn-default">Submit</button>
-      </div>
-    </div>
-  </form>
-  }
-  <p>
-    Your Name: {context.state.player.name}  
-  </p>
-  <p>
-    Your ID: {context.state.player.id}
-  </p>
-</div>
-        }
-      </PlayerContext.Consumer> 
 
-    );
-  }
+<PlayerContext.Consumer> 
+{ context =>
+<div>
+{ !this.props.loggedIn && 
+  <Form onSubmit={ d => context.updateUser(this.handleSubmit(d, context))}>
+    <FormGroup>
+      <FormLabel>Name:</FormLabel>
+        <FormControl 
+          type="text" 
+          placeholder="Enter your name"
+          id="usr" 
+          value={this.state.value} 
+                onChange={this.handleChange} />
+    </FormGroup>
+    <Button type="submit">Submit</Button>
+  </Form>
 }
+{ this.props.loggedIn &&
+<div>
+<p>
+  Your Name: {context.state.player.name}  
+</p>
+<p>
+  Your ID: {context.state.player.id}
+</p>
+</div>
+}
+</div>
+}
+</PlayerContext.Consumer> 
+);
+}
+}
+
 export default UserRegistration

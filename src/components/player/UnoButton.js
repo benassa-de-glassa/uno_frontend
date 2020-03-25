@@ -1,13 +1,15 @@
 import React from 'react'
 
+import { Button } from 'react-bootstrap'
+
 function UnoButton() {
     return (
-        <button 
+        <Button 
           className="uno" 
           onClick={()=>alert('UNO')}
         >
             UNO!
-        </button>
+        </Button>
     )
 }
 

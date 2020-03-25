@@ -14,7 +14,6 @@ export class Deck extends Component {
         { context =>
           <div className="card" id="turnedcard" style={{background: "black"}}
             onClick={ () => console.log("deck clicked") }
-            onMouseOver={ () => console.log("mouseover")}
           >
               <img src={unologo} alt="" width="80%" style={{marginTop: "60%", marginLeft: "5%"}}/>
           </div>

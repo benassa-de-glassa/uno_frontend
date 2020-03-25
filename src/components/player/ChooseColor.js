@@ -1,14 +1,15 @@
 import React from 'react'
+
 import { Button } from 'react-bootstrap'
 
 import PlayerContext from '../../context/PlayerContext';
 
-function Deal7Button() {
+function ChooseColor() {
     return (
         <PlayerContext.Consumer>
             { (value) => 
             <div>
-            { !value.state.initialCardsDealt &&
+            { value.state.canChooseColor &&
                 <div>
                 <Button 
                     className="deal" 
@@ -24,4 +25,4 @@ function Deal7Button() {
     )
 }
 
-export default Deal7Button
+export default ChooseColor
