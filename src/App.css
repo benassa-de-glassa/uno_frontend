@@ -16,7 +16,7 @@ div.hand {
 div.player {
   background-color: darksalmon;
   overflow: auto;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 button.uno {

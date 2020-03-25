@@ -1,4 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
+import { Button } from 'react-bootstrap'
+
 import PlayerContext from '../../context/PlayerContext';
 
 import {API_URL} from '../../paths'
@@ -7,10 +9,16 @@ import {API_URL} from '../../paths'
 export class UserRegistration extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = { 
+      value: "",
+      loggedIn: true };
+    
+    this.hideComponent= this.hideComponent.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  hideComponent() {}
 
   handleChange(event) {    
     this.setState({value: event.target.value});  
@@ -28,6 +36,8 @@ export class UserRegistration extends Component {
         url.searchParams.append(key, params[key])
       )
     }
+
+    this.setState( {show: false} );
     
     const response = await fetch(url, {method:'POST'})
     return await response.json()
@@ -37,18 +47,26 @@ export class UserRegistration extends Component {
     return (
       <PlayerContext.Consumer> 
         {context =>
-          <Fragment>
-            <form onSubmit={e => context.updateUser(this.handleSubmit(e, context))}>
-              <label>
-              Name:
-                <input type="text" value={this.state.value} onChange={this.handleChange} />        
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
-            <p>
-              Your Name: {context.state.player.name}
-            </p>
-          </Fragment>
+<div>
+{ this.state.loggedIn && 
+  <form onSubmit={e => context.updateUser(this.handleSubmit(e, context))}>
+    <div className="form-group">
+      <label htmlFor="usr">Name:</label>
+      <input type="text" className="form-control" id="usr" value={this.state.value} 
+                onChange={this.handleChange} />
+      <div className="input-group-btn">
+        <button type="submit" className="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+  }
+  <p>
+    Your Name: {context.state.player.name}  
+  </p>
+  <p>
+    Your ID: {context.state.player.id}
+  </p>
+</div>
         }
       </PlayerContext.Consumer> 
 

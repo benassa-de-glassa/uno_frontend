@@ -1,4 +1,4 @@
-import React, { createContext, Fragment} from 'react'
+import React, { Fragment } from 'react'
 
 import PlayerContext from '../../context/PlayerContext';
 
@@ -23,14 +23,13 @@ function Deal7Button() {
                 <button 
                     className="deal" 
                     onClick = { function () {
-                        var resp = handleClick(value.state.player.id)
+                        handleClick(value.state.player.id)
                             .then( d => {
                                 var currcards = value.state.cards
                                 currcards.push(...d)
-                                value.updateCards(currcards)
-                              }, err => {
-                                console.log(err);
-                              });
+                                value.updateCards()
+                            })
+                            .catch( err => console.log(err) );
                     }
                     }
                 >

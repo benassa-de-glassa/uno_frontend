@@ -1,5 +1,7 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
+
+import { Button } from 'react-bootstrap'
 
 import PlayerProvider from './context/PlayerProvider'
 
@@ -19,6 +21,7 @@ function App () {
   return (
     <PlayerProvider value={state}>
       <div className="App">
+      <Button variant="primary" className="mr-2">Primary</Button>
         <UserRegistration />
         <Stacks />
         <Player />

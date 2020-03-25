@@ -1,25 +1,24 @@
 import React, { Component } from 'react'
 import Card from '../Card'
 
+import PlayerContext from '../../context/PlayerContext'
+
 // Ablagestapel
 export class Pile extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      topCard: {id:108, color: 'pink', number: -1}
-    }
-  }
-
-
+  
   render() {
     return (
       <div>
-        <Card 
-          //   id={this.state.topCard.id}
-          color={this.state.topCard.color}
-          number={this.state.topCard.number}
-          onClick={()=>{}}
-        />
+        <PlayerContext.Consumer>
+          { (value) => 
+            <Card 
+              //   id={this.state.topCard.id}
+              color={value.state.topCard.color}
+              number={value.state.topCard.number}
+              onClick={()=>{ value.updateTopCard() }}
+            />
+      }
+        </PlayerContext.Consumer>
       </div>
     )
   }
