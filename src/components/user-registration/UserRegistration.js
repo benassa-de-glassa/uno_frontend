@@ -29,7 +29,7 @@ export class UserRegistration extends Component {
     // if the id is undefined a new user is registered with the server, else just the name is updated
     var url = new URL(API_URL)
     url.pathname += 'game/add_player'
-    
+
     if(context.state.player.id === undefined) {
       var params = { player_name: this.state.value }
       // create the correct request based on the type parameter
