@@ -58,7 +58,9 @@ class PlayerProvider extends Component {
     response.json()
       .then( d => { 
         console.log(d) 
-        if (d[0]) { this.setState({canChooseColor: true})}
+        if (d[0]) { 
+          console.log("???");
+          this.setState({canChooseColor: true})}
       })
       this.updateCards()
       this.props.updateTopCard()
@@ -93,7 +95,7 @@ class PlayerProvider extends Component {
       this.props.updateActivePlayer()
   }
 
-  async chooseColor (color) {
+  async chooseColor(color) {
     var url = new URL(API_URL);
     url.pathname += "game/choose_color" 
     url.searchParams.append("player_id", this.state.player.id)
@@ -102,6 +104,8 @@ class PlayerProvider extends Component {
     const response = await fetch(url, {method:'POST'})
     response.json()
       .then( d => { console.log(d) } )
+
+    this.setState({canChooseColor: false})
   }
 
   render() {

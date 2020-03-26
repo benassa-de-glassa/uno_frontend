@@ -1,3 +1,5 @@
+Frontend for UNO browser application: https://github.com/benassa-de-glassa/uno_backend
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
