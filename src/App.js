@@ -80,7 +80,6 @@ class App extends Component {
                 <div>
                   <Stacks topCard={this.state.topCard} updateTopCard={this.updateTopCard}/>
                   <Player />
-                  
                 </div>
               }
               </div>
