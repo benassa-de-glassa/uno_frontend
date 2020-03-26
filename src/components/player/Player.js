@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Hand from './Hand'
-import Deal7Button from './DealCardsButton'
 import UnoButton from './UnoButton'
-import ChooseColor from './ChooseColor'
 
 export class Player extends Component {
     constructor(props){
@@ -15,10 +13,8 @@ export class Player extends Component {
     render() {
         return (
             <div className="player">
-                <ChooseColor/>
+                <Hand playerID={this.props.playerID}/>
                 <UnoButton hasUno={this.state.hasUno}/>
-                <Deal7Button/>
-                <Hand/>
             </div>
         )
     }

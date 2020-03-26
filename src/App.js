@@ -7,6 +7,7 @@ import UserRegistration from './components/user-registration/UserRegistration'
 import Controls from './components/controls/Controls'
 import Stacks from './components/stacks/Stacks'
 import Player from './components/player/Player'
+//import Lobby from './components/lobby/Lobby'
 
 import {API_URL} from './paths'
 
@@ -68,16 +69,26 @@ class App extends Component {
       >
         <div className="App">
           <UserRegistration loggedIn={this.state.loggedIn} playerLoggedIn={this.playerLoggedIn}/>
-          { this.state.loggedIn && 
-            <div>
-              <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
+          <div className="container">
+            <div className="row">
+              <div className="col">
+              { this.state.loggedIn && 
+                <div>
+                  <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
+                </div>
+              } { this.state.loggedIn && this.state.gameStarted &&
+                <div>
+                  <Stacks topCard={this.state.topCard} updateTopCard={this.updateTopCard}/>
+                  <Player />
+                  
+                </div>
+              }
+              </div>
+              <div className="col">
+                <p>Here comes the lobby</p>
+              </div>
             </div>
-          } { this.state.loggedIn && this.state.gameStarted &&
-            <div>
-              <Stacks topCard={this.state.topCard} updateTopCard={this.updateTopCard}/>
-              <Player />
-            </div>
-          }
+          </div>
         </div>
       </PlayerProvider>
     );

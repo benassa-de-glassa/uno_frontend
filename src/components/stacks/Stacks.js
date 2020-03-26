@@ -5,11 +5,11 @@ import Pile from './Pile'
 function Stacks(props) {
   return (
     <div className="row">
-      <div className="col-sm-2">
+      <div className="col">
       {/* aufnahmestapel */}
       <Deck/>
       </div>
-      <div className="col-sm-10">
+      <div className="col">
       {/* ablagestapel */}
       <Pile topCard={props.topCard} updateTopCard={props.updateTopCard}/>
       </div> 

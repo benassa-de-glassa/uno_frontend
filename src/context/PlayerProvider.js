@@ -102,6 +102,8 @@ class PlayerProvider extends Component {
     const response = await fetch(url, {method:'POST'})
     response.json()
       .then( d => { console.log(d) } )
+
+    this.setState({canChooseColor: false})
   }
 
   render() {

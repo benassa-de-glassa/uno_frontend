@@ -9,7 +9,7 @@ export class OtherPlayers extends Component {
     }
     render() {
         return (
-            <div className="player">
+            <div className="container">
             </div>
         )
     }
