@@ -13,20 +13,40 @@ export class Card extends Component {
     }
 
     onClick(event) {
-        this.props.onClick(this.state.id)
+        this.props.onClick()
     }
 
     render() {
-        return (
+        // makes the text black if the card is yellow and changes the numbers
+        // 10, 11, 12 to their corresponding text representation 
+        // e.g. the number 10 becomes the reverse card displayed as "<=>"
+        var textcolor, 
+            text = this.props.number;
+
+        if (this.props.color === "yellow") { textcolor="black" }
+        else { textcolor = "white"}
+
+        if (this.props.color === "black") {
+            if (text === 0) { text = "?"}
+            else if (text === 1) { text = "+4"}
+        }
+
+        else {
+            if (text === 10 ) { text = "<=>"}
+            else if (text === 11 ) { text = "(/)"}
+            else if (text === 12 ) { text = "+2"}
+        }
+            return (
             <div 
                 className='card' 
                 onClick={this.onClick} 
                 style={{
                     background: this.props.color, 
+                    color: textcolor
                     }}
             >
                 <h3> 
-                    {this.props.number}
+                    {text}
                 </h3>
             </div>
         )

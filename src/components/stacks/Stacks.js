@@ -1,18 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Deck from './Deck'
 import Pile from './Pile'
 
-export class Stacks extends Component {
-  render() {
-    return (
-      <div className="stacks">
-        {/* aufnahmestapel */}
-        <Deck playerID={this.props.playerID}/> 
-        {/* ablagestapel */}
-        <Pile />
+function Stacks(props) {
+  return (
+    <div className="row">
+      <div className="col-sm-2">
+      {/* aufnahmestapel */}
+      <Deck/>
       </div>
-    )
-  }
+      <div className="col-sm-10">
+      {/* ablagestapel */}
+      <Pile topCard={props.topCard} updateTopCard={props.updateTopCard}/>
+      </div> 
+    </div>
+  )
 }
+
 
 export default Stacks

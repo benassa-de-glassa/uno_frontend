@@ -1,28 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Card from '../Card'
 
-// Ablagestapel
-export class Pile extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      topCard: {id:108, color: 'pink', number: -1}
-    }
-  }
-
-
-  render() {
-    return (
-      <div>
-        <Card 
-          //   id={this.state.topCard.id}
-          color={this.state.topCard.color}
-          number={this.state.topCard.number}
-          onClick={()=>{}}
-        />
-      </div>
-    )
-  }
+function Pile(props) {
+  return (
+    <div>
+      <Card 
+        color={props.topCard.color}
+        number={props.topCard.number}
+        onClick={ props.updateTopCard }
+      />
+    </div>
+  )
 }
 
 export default Pile
