@@ -1,11 +1,12 @@
 div.card {
   width: 80px;
   height: 150px;
-  margin: 10px;
-  padding-left: 10px;
+  margin: 5px;
+  padding-left: 5px;
   font-size: 30px;
   color: #ffffff;
   border-radius: 5%;
+  border: 2px solid black;
 }
 
 div.hand {
@@ -26,4 +27,8 @@ button.uno {
 btn-red {
   background: red;
   color: red
+}
+
+navbar {
+  background-color: darksalmon;
 }

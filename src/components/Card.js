@@ -31,9 +31,10 @@ export class Card extends Component {
             else if (text === 1) { text = "+4"}
         }
 
+    
         else {
-            if (text === 10 ) { text = "<=>"}
-            else if (text === 11 ) { text = "(/)"}
+            if (text === 10 ) { text = "\u2B0C"}        // <=> unicode symbol
+            else if (text === 11 ) { text = "\u2000 \u20E0"}   // (/) unicode symbol
             else if (text === 12 ) { text = "+2"}
         }
             return (

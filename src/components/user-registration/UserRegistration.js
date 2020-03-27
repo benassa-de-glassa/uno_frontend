@@ -29,16 +29,10 @@ export class UserRegistration extends Component {
     // if the id is undefined a new user is registered with the server, else just the name is updated
     var url = new URL(API_URL)
     url.pathname += 'game/add_player'
-
-    if(context.state.player.id === undefined) {
-      var params = { player_name: this.state.value }
-      // create the correct request based on the type parameter
-      Object.keys(params).forEach(key =>
-        url.searchParams.append(key, params[key])
-      )
-    }
+    url.searchParams.append("player_name", this.state.value)
 
     this.props.playerLoggedIn();
+    this.setState({value: ""})
     
     const response = await fetch(url, {method:'POST'})
     return await response.json()
@@ -63,16 +57,6 @@ export class UserRegistration extends Component {
     </FormGroup>
     <Button type="submit">Submit</Button>
   </Form>
-}
-{ this.props.loggedIn &&
-<div>
-<p>
-  Your Name: {context.state.player.name}  
-</p>
-<p>
-  Your ID: {context.state.player.id}
-</p>
-</div>
 }
 </div>
 }

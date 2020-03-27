@@ -3,13 +3,13 @@ import Hand from './Hand'
 import UnoButton from './UnoButton'
 import DealCardsButton from './DealCardsButton'
 import ChooseColor from './ChooseColor'
+import CantPlayButton from './CantPlayButton'
 
 export class Player extends Component {
     constructor(props){
         super(props)
         this.state = {
             isPlaying: true,
-            hasUno: false,
         }
     }
     render() {
@@ -17,8 +17,9 @@ export class Player extends Component {
             <div className="player">
                 <ChooseColor/>
                 <DealCardsButton/>
-                <Hand playerID={this.props.playerID}/>
-                <UnoButton hasUno={this.state.hasUno}/>
+                <CantPlayButton/>
+                <Hand/>
+                <UnoButton/>
             </div>
         )
     }

@@ -5,23 +5,12 @@ import Card from '../Card'
 import PlayerContext from '../../context/PlayerContext'
 
 export class Hand extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      cards: [],
-    }
-  }
-
-  componentDidMount() {
-    // this.initialCards()
-  }
-
   render() {
     return (
       <div className="hand">
         <PlayerContext.Consumer>
           { (value) =>
-            value.state.cards.map(
+            value.props.cards.map(
               card => 
                 <Card
                   key={card.id}
