@@ -11,7 +11,8 @@ export class ChatLog extends Component {
   render() {
     return (
       <div className="container m-0 p-0">
-        <div className="chatbox container p-2 my-0">
+        <p className="m-0"><strong>Chat</strong></p>
+        <div className="chatbox container p-0 my-0">
           { this.props.messages.map(msg => {
             if (this.state.showServerLog && (msg.sender === "server")) {
               return(
@@ -29,7 +30,7 @@ export class ChatLog extends Component {
             }
           })}
         </div>
-        <div>
+        <div className="mx-0 mt-1 pb-2">
           <textarea className="form-control pl-2 my-0" rows="2" placeholder="Type your message here... (not working yet)"></textarea>
         </div>
       </div>

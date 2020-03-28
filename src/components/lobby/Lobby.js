@@ -5,10 +5,8 @@ import { WS_URL } from '../../paths'
 import OtherPlayers from './OtherPlayers'
 import ChatLog from './ChatLog'
 
-
-
 export class Lobby extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       player: [],
@@ -20,25 +18,27 @@ export class Lobby extends Component {
       transports: ['websocket'],
       jsonp: false
     });
-    
+
     this.startSocketIO = () => {
       socket.connect();
-      
+
       socket.on('connect', () => {
-        console.log('connected')
+        console.log('connection to socket.io successful')
       })
       socket.on('disconnect', () => {
-        console.log('connection to server lost.');
+        console.log('connection to socket.io lost.');
       });
-      
+
       socket.on('player-list', (data) => {
+        console.log(data);
+        this.setState({messages: data.messages});
         if (this.state.player !== data.playerList || this.state.turn !== data.turn) {
-          this.setState({player: data.playerList, turn: data.turn})
+          this.setState({ player: data.playerList, turn: data.turn })
         }
-      });
+      })
     }
   }
- 
+
 
   componentDidMount() {
     this.startSocketIO()
@@ -47,11 +47,11 @@ export class Lobby extends Component {
   render() {
     return (
       <div className="container lobby">
-        <OtherPlayers playerList={this.state.player} turn={this.state.turn}/>
-        <ChatLog messages={this.state.messages}/>
+        <OtherPlayers playerList={this.state.player} turn={this.state.turn} />
+        <ChatLog messages={this.state.messages} />
       </div>
     )
   }
-
 }
+
 export default Lobby

@@ -39,7 +39,7 @@ div.lobby {
 }
 
 div.chatbox {
-  max-height:500px;
+  max-height:300px;
   overflow-y: scroll;
   float: bottom
 }

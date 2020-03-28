@@ -1,19 +1,15 @@
 import React, { Component, Fragment } from 'react'
 
 export class OtherPlayers extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      started: true,
-    }
-  }
+  //constructor(props){
+  //  super(props)
+  //}
 
   componentDidUpdate(){
   }
 
   render() {
-    let list
-    list = this.props.playerList.map(player=> { 
+    let list = this.props.playerList.map( player => { 
       return(
         <div 
           className="sidebar-player-list" 
@@ -28,7 +24,7 @@ export class OtherPlayers extends Component {
     })
     return (
       <Fragment>
-        Who's playing? <br/>
+        <strong>Lobby</strong> <br/>
         {list}
       </Fragment>
     )
