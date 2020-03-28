@@ -50,7 +50,7 @@ export class GameState extends Component {
       <div>
         <p><strong>{this.state.activePlayerName}</strong>'s turn</p>
         { this.state.penalty != 0 && 
-          <h3>++{this.state.penalty}</h3>
+          <h3>+{this.state.penalty}</h3>
         }
         { this.state.colorChosen &&
            <svg height="100" width="100">
