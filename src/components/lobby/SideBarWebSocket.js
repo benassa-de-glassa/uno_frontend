@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import openSocket from "socket.io-client"
 import { WS_URL } from '../../paths'
 
-import PlayerList from './PlayerList'
+// import PlayerList from './PlayerList'
 var allowedOrigins = "*,*";
 const socket = openSocket(WS_URL,  {origins:allowedOrigins})
 
@@ -36,7 +36,7 @@ export class SideBarWebSocket extends Component {
     return (
       <Fragment>
         <div onClick={this.submitMessage}> SideBarWebSocket </div>
-        <PlayerList />
+        {this.props.children}
       </Fragment>
     )
   }
