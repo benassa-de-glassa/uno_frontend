@@ -6,11 +6,14 @@ export class ChatLog extends Component {
         this.state = {
             started: true,
         }
+        this.props = props
     }
     render() {
         return (
             <div className="container">
-                <p>Here comes the chatlog</p>
+                { this.props.messages.map( msg => 
+                    <p>{msg}</p>)
+                }
             </div>
         )
     }

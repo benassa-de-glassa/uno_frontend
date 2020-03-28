@@ -7,8 +7,6 @@ import PlayerList from './PlayerList'
 var allowedOrigins = "*,*";
 const socket = openSocket(WS_URL,  {origins:allowedOrigins})
 
-
-
 export class SideBarWebSocket extends Component {
   constructor(props){
     super(props)
