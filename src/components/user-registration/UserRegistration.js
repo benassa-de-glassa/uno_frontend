@@ -44,7 +44,6 @@ export class UserRegistration extends Component {
 <PlayerContext.Consumer> 
 { context =>
 <div>
-{ !this.props.loggedIn && 
   <Form onSubmit={ d => context.updateUser(this.handleSubmit(d, context))}>
     <FormGroup>
       <FormLabel>Name:</FormLabel>
@@ -57,7 +56,6 @@ export class UserRegistration extends Component {
     </FormGroup>
     <Button type="submit">Submit</Button>
   </Form>
-}
 </div>
 }
 </PlayerContext.Consumer> 

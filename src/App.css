@@ -12,23 +12,26 @@ div.card {
 div.hand {
   display: inline-flex;
   float: left;
+  flex-wrap: wrap;
 }
 
 div.player {
   background-color: darksalmon;
   overflow: auto;
   max-width: 800px;
+  border-radius: 5px
 }
 
 button.uno {
   float: right;
 }
 
-btn-red {
-  background: red;
-  color: red
+.topbar {
+  background-color: darksalmon;
+  margin-bottom: 20px
 }
 
-navbar {
-  background-color: darksalmon;
+div.lobby {
+  background-color: lightgray;
+  border-radius: 5px;
 }

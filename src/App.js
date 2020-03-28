@@ -9,7 +9,7 @@ import UserRegistration from './components/user-registration/UserRegistration'
 import Controls from './components/controls/Controls'
 import Stacks from './components/stacks/Stacks'
 import Player from './components/player/Player'
-//import Lobby from './components/lobby/Lobby'
+import Lobby from './components/lobby/Lobby'
 
 // if DEBUG
 import { Button, Navbar, NavItem } from 'react-bootstrap'
@@ -95,7 +95,7 @@ class App extends Component {
     url.pathname += "game/active_player" 
     const response = await fetch(url, {method:'GET'})
     response.json()
-      .then( d => this.setState({activePlayerName: d.name}) )
+      .then( d => {console.log(d); this.setState({activePlayerName: d.name}) })
   }
 
   async resetGame() {
@@ -130,7 +130,7 @@ class App extends Component {
   <PlayerContext.Consumer>
     { context => 
       <div className="App">
-        <Navbar style={{backgroundColor: "darksalmon"}}>
+        <Navbar className="topbar">
           <NavItem className="mr-3">
             <h1>Inegleit <small>Online</small></h1>
           </NavItem>
@@ -157,7 +157,7 @@ class App extends Component {
             </NavItem>
             <NavItem className="mr-sm-2">
               <p className="text-md-left font-weight-bold ml-2">
-                {context.state.player.name} ( id = {context.state.player.id} )
+                {context.state.player.name} ( id: {context.state.player.id} )
               </p>
               
             </NavItem>
@@ -165,10 +165,15 @@ class App extends Component {
           }
           </Navbar>
     
-      <UserRegistration loggedIn={this.state.loggedIn} playerLoggedIn={this.playerLoggedIn}/>
+      
       <div className="container">
         <div className="row">
-          <div className="col">
+          <div className="col-8">
+          { !this.state.loggedIn &&
+            <div>
+              <UserRegistration playerLoggedIn={this.playerLoggedIn}/>
+            </div>
+            }
           { this.state.loggedIn && this.state.gameStarted &&
             <div>
               <Stacks 
@@ -180,8 +185,8 @@ class App extends Component {
             </div>
           }
           </div>
-          <div className="col">
-            <p>Here comes the lobby</p>
+          <div className="col-4">
+            <Lobby/>
           </div>
         </div>
       </div>

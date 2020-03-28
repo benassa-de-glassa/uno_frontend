@@ -7,7 +7,7 @@ import PlayerContext from '../../context/PlayerContext'
 export class Hand extends Component {
   render() {
     return (
-      <div className="hand">
+      <div className="container hand">
         <PlayerContext.Consumer>
           { (value) =>
             value.props.cards.map(

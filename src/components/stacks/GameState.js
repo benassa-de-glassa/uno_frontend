@@ -2,7 +2,7 @@ import React from 'react'
 
 function GameState(props) {
   return (
-    <p>{props.activePlayer}'s turn</p>
+    <p><strong>{props.activePlayerName}</strong>'s turn</p>
   )
 }
 
