@@ -3,16 +3,17 @@ import { Button } from 'react-bootstrap'
 
 import PlayerContext from '../../context/PlayerContext';
 
-function UnoButton() {
+
+function CantPlayButton() {
     return (
         <PlayerContext.Consumer>
             { (value) => 
-            <div style={{float:"left"}}>
-            { !value.state.saidUno &&
+            <div>
+            { value.state.cardPickedUp &&
                 <Button 
-                    onClick = { value.sayUno }
+                    onClick = { value.cantPlay }
                 >
-                    Uno
+                    Can't play
                 </Button>
             }
             </div>
@@ -21,4 +22,4 @@ function UnoButton() {
     )
 }
 
-export default UnoButton
+export default CantPlayButton

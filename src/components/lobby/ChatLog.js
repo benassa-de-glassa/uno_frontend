@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class OtherPlayers extends Component {
+export class ChatLog extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -10,10 +10,10 @@ export class OtherPlayers extends Component {
     render() {
         return (
             <div className="container">
-                <p>Here come the other players</p>
+                <p>Here comes the chatlog</p>
             </div>
         )
     }
 }
 
-export default OtherPlayers
+export default ChatLog

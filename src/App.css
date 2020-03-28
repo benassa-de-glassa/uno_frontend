@@ -1,29 +1,37 @@
 div.card {
   width: 80px;
   height: 150px;
-  margin: 10px;
-  padding-left: 10px;
+  margin: 5px;
+  padding-left: 5px;
   font-size: 30px;
   color: #ffffff;
   border-radius: 5%;
+  border: 2px solid black;
 }
 
 div.hand {
   display: inline-flex;
   float: left;
+  flex-wrap: wrap;
 }
 
 div.player {
   background-color: darksalmon;
   overflow: auto;
   max-width: 800px;
+  border-radius: 5px
 }
 
 button.uno {
   float: right;
 }
 
-btn-red {
-  background: red;
-  color: red
+.topbar {
+  background-color: darksalmon;
+  margin-bottom: 20px
+}
+
+div.lobby {
+  background-color: lightgray;
+  border-radius: 5px;
 }
