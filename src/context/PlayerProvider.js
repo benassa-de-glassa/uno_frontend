@@ -80,7 +80,7 @@ class PlayerProvider extends Component {
     response.json()
       .then( d => { 
         console.log(d);
-        if ( !d[1] ) { this.setState({cardPickedUp: true}) } 
+        if ( d[0] && !d[1] ) { this.setState({cardPickedUp: true}) } 
       })
     
     this.setState({saidUno: false})
