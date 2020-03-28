@@ -11,7 +11,7 @@ export class ChatLog extends Component {
   render() {
     return (
       <div className="container m-0 p-0">
-        <div className="chatbox container p-2 my-0">
+        <div className="chatbox container p-0 my-0">
           { this.props.messages.map(msg => {
             if (this.state.showServerLog && (msg.sender === "server")) {
               return(
