@@ -9,6 +9,8 @@ import Stacks from './components/stacks/Stacks'
 import Player from './components/player/Player'
 //import Lobby from './components/lobby/Lobby'
 
+import SideBarWebSocket from './components/lobby/SideBarWebSocket'
+
 import {API_URL} from './paths'
 
 class App extends Component {
@@ -33,9 +35,9 @@ class App extends Component {
     url.pathname += "game/start_game" 
 
     const response = await fetch(url, {method:'POST'})
-    response.json().then( d => {
-        this.updateTopCard();
-        this.updateActivePlayer();
+    response.json().then( () => {
+      this.updateTopCard();
+      this.updateActivePlayer();
     }).catch( err => console.log(err) )
   }
 
@@ -72,19 +74,19 @@ class App extends Component {
           <div className="container">
             <div className="row">
               <div className="col">
-              { this.state.loggedIn && 
+                { this.state.loggedIn && 
                 <div>
                   <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
                 </div>
-              } { this.state.loggedIn && this.state.gameStarted &&
+                } { this.state.loggedIn && this.state.gameStarted &&
                 <div>
                   <Stacks topCard={this.state.topCard} updateTopCard={this.updateTopCard}/>
                   <Player />
                 </div>
-              }
+                }
               </div>
               <div className="col">
-                <p>Here comes the lobby</p>
+                <SideBarWebSocket />
               </div>
             </div>
           </div>
