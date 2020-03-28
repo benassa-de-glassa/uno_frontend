@@ -13,7 +13,12 @@ function Stacks(props) {
       <Pile topCard={props.topCard} updateTopCard={props.updateTopCard}/>
       </div> 
       <div className="col-md-auto">
-      <GameState activePlayerName={props.activePlayerName} />
+      <GameState 
+        activePlayerName={props.activePlayerName} 
+        currentPenalty={props.currentPenalty}
+        colorChosen={props.colorChosen}
+        chosenColor={props.chosenColor}
+      />
       </div>
     </div>
   )

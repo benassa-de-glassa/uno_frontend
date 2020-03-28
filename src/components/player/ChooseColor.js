@@ -11,6 +11,7 @@ function ChooseColor() {
             <div>
             {  value.state.canChooseColor &&
                 <div style={{float:"left"}}>
+                <label className="mr-2">Select color </label>
                 <ButtonGroup>
                 <Button style={{backgroundColor: "red"}} onClick={ () => value.chooseColor("red")}
                 >Red</Button>

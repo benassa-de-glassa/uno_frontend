@@ -113,6 +113,8 @@ class PlayerProvider extends Component {
       .then( d => { console.log(d) } )
 
     this.setState({canChooseColor: false})
+    this.props.colorSelected(color)
+
   }
 
   async sayUno() {

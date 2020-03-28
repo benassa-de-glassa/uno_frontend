@@ -30,7 +30,10 @@ class App extends Component {
       player: {
         name: "",
         id: undefined,
-      }
+      },
+      currentPenalty: 0,
+      colorChosen: false,
+      chosenColor: "",
     }
     this.startGame = this.startGame.bind(this);
     this.playerLoggedIn = this.playerLoggedIn.bind(this);
@@ -39,6 +42,7 @@ class App extends Component {
     this.updateTopCard = this.updateTopCard.bind(this);
     this.updateActivePlayer = this.updateActivePlayer.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.colorSelected = this.colorSelected.bind(this);
 
     this.DEBUG = true
   }
@@ -95,7 +99,7 @@ class App extends Component {
     url.pathname += "game/active_player" 
     const response = await fetch(url, {method:'GET'})
     response.json()
-      .then( d => {console.log(d); this.setState({activePlayerName: d.name}) })
+      .then( d => { this.setState({activePlayerName: d.name}) })
   }
 
   async resetGame() {
@@ -115,6 +119,10 @@ class App extends Component {
       cards: [],
     })
   }
+
+    colorSelected(color) {
+      this.setState({colorChosen: true, chosenColor: color})
+    }
   
 
   render () {
@@ -126,6 +134,7 @@ class App extends Component {
     initialCardsDealt={this.state.initialCardsDealt}
     dealInitialCards={this.dealInitialCards}
     cards={this.state.cards}
+    colorSelected={this.colorSelected}
 >
   <PlayerContext.Consumer>
     { context => 
@@ -180,6 +189,9 @@ class App extends Component {
                 topCard={this.state.topCard} 
                 updateTopCard={this.updateTopCard}
                 activePlayerName={this.state.activePlayerName}
+                currentPenalty={this.state.currentPenalty}
+                colorChosen={this.state.colorChosen}
+                chosenColor={this.state.chosenColor}
               />
               <Player/>
             </div>
