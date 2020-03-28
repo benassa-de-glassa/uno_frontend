@@ -1,29 +1,62 @@
 div.card {
   width: 80px;
   height: 150px;
-  margin: 10px;
-  padding-left: 10px;
+  margin: 5px;
+  padding-left: 5px;
   font-size: 30px;
   color: #ffffff;
   border-radius: 5%;
+  border: 2px solid black;
 }
 
 div.hand {
   display: inline-flex;
   float: left;
+  flex-wrap: wrap;
 }
 
 div.player {
   background-color: darksalmon;
   overflow: auto;
   max-width: 800px;
+  border-radius: 5px
 }
 
 button.uno {
   float: right;
 }
 
-btn-red {
-  background: red;
-  color: red
+.topbar {
+  background-color: darksalmon;
+  margin-bottom: 20px
+}
+
+div.lobby {
+  background-color: lightgray;
+  border-radius: 5px;
+  overflow: auto;
+  padding: 10px;
+}
+
+div.chatbox {
+  max-height:300px;
+  overflow-y: scroll;
+  float: bottom
+}
+
+div.servermessage {
+  background-color: rgb(250, 243, 210);
+  border-radius: 5px;
+  border: 1px solid lightblue
+}
+
+div.message {
+  background-color: rgb(255, 218, 204);
+  border-radius: 5px;
+  border: 1px solid darksalmon
+}
+
+div.sidebar-player-list {
+  border-radius: 5px;
+  padding-left: 10px;
 }

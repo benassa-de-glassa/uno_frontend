@@ -9,7 +9,7 @@ function Deal7Button() {
         <PlayerContext.Consumer>
             { (value) => 
             <div>
-            { !value.state.initialCardsDealt &&
+            { !value.props.initialCardsDealt &&
                 <Button 
                     className="deal" 
                     onClick = { value.dealInitialCards }
