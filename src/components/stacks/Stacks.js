@@ -7,18 +7,18 @@ function Stacks(props) {
   return (
     <div className="row">
       <div className="col-md-auto">
-      <Deck/>
+        <Deck />
       </div>
       <div className="col-md-auto">
-      <Pile topCard={props.topCard} updateTopCard={props.updateTopCard}/>
+        <Pile topCard={props.topCard}/>
       </div> 
       <div className="col-md-auto">
-      <GameState 
-        activePlayerName={props.activePlayerName} 
-        currentPenalty={props.currentPenalty}
-        colorChosen={props.colorChosen}
-        chosenColor={props.chosenColor}
-      />
+        <GameState 
+          activePlayerName={props.activePlayerName} 
+          currentPenalty={props.currentPenalty}
+          colorChosen={props.colorChosen}
+          chosenColor={props.chosenColor}
+        />
       </div>
     </div>
   )
