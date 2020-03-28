@@ -4,12 +4,12 @@ import OtherPlayers from './OtherPlayers'
 import ChatLog from './ChatLog'
 import SideBarWebSocket from './SideBarWebSocket'
 
-function Lobby() {
+function Lobby(props) {
   return (
     <div className="container lobby">
       <SideBarWebSocket> 
         <OtherPlayers/>
-        <ChatLog/>
+        <ChatLog messages={props.messages}/>
       </SideBarWebSocket>
     </div>
   )

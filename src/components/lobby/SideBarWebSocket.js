@@ -5,8 +5,6 @@ import { WS_URL } from '../../paths'
 import OtherPlayers from './OtherPlayers'
 
 
-
-
 export class SideBarWebSocket extends Component {
   constructor(props){
     super(props)

@@ -35,3 +35,22 @@ div.lobby {
   background-color: lightgray;
   border-radius: 5px;
 }
+
+div.chatbox {
+  max-height:500px;
+  overflow-y: scroll;
+  float: bottom
+}
+
+div.servermessage {
+  background-color: rgb(250, 243, 210);
+  border-radius: 5px;
+  border: 1px solid lightblue
+}
+
+div.message {
+  background-color: rgb(255, 218, 204);
+  border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid darksalmon
+}
