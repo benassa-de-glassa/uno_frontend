@@ -14,7 +14,7 @@ import Lobby from './components/lobby/Lobby'
 // if DEBUG
 import { Button, Navbar, NavItem } from 'react-bootstrap'
 
-import SideBarWebSocket from './components/lobby/SideBarWebSocket'
+// import SideBarWebSocket from './components/lobby/SideBarWebSocket'
 
 import {API_URL} from './paths'
 

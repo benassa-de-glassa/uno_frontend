@@ -1,11 +1,9 @@
 import React, { Component, Fragment } from 'react'
 
-import openSocket from "socket.io-client"
+import socketIO from "socket.io-client"
 import { WS_URL } from '../../paths'
+import OtherPlayers from './OtherPlayers'
 
-// import PlayerList from './PlayerList'
-var allowedOrigins = "*,*";
-const socket = openSocket(WS_URL,  {origins:allowedOrigins})
 
 
 
@@ -13,30 +11,43 @@ export class SideBarWebSocket extends Component {
   constructor(props){
     super(props)
     this.state = {
-      player: {},
+      player: [],
+      turn: 0,
       endpoint: WS_URL
     }
-    // const socket = socketIOClient(this.state.endpoint);
+    const socket = socketIO(WS_URL, {
+      transports: ['websocket'],
+      jsonp: false
+    });
+    
+    this.startSocketIO = () => {
+      socket.connect();
+      
+      socket.on('connect', () => {
+        console.log('connected')
+      })
+      socket.on('disconnect', () => {
+        console.log('connection to server lost.');
+      });
+      
+      socket.on('player-list', (data) => {
+        console.log(data)
+        if (this.state.player !== data.playerList || this.state.turn !== data.turn) {
+          this.setState({player: data.playerList, turn: data.turn})
+        }
+      });
     }
-
-  setPlayerList = (playerList) => {
-    this.setState({player: playerList})
   }
-  
+ 
 
   componentDidMount() {
-    socket.connect()
-    socket.on('player dict', data => {
-      console.log(data)
-      this.setState({player: data})
-    })
+    this.startSocketIO()
   }
 
   render() {
     return (
       <Fragment>
-        <div onClick={this.submitMessage}> SideBarWebSocket </div>
-        {this.props.children}
+        <OtherPlayers playerList={this.state.player} turn={this.state.turn}/>
       </Fragment>
     )
   }
