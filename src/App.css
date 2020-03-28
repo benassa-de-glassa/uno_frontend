@@ -34,6 +34,8 @@ button.uno {
 div.lobby {
   background-color: lightgray;
   border-radius: 5px;
+  overflow: auto;
+  padding: 10px;
 }
 
 div.chatbox {
@@ -51,6 +53,10 @@ div.servermessage {
 div.message {
   background-color: rgb(255, 218, 204);
   border-radius: 5px;
-  border-radius: 5px;
   border: 1px solid darksalmon
+}
+
+div.sidebar-player-list {
+  border-radius: 5px;
+  padding-left: 10px;
 }
