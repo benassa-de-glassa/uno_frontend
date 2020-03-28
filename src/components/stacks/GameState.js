@@ -49,7 +49,7 @@ export class GameState extends Component {
     return (
       <div>
         <p><strong>{this.state.activePlayerName}</strong>'s turn</p>
-        { this.state.penalty != 0 && 
+        { this.state.penalty !== 0 && 
           <h3>+{this.state.penalty}</h3>
         }
         { this.state.colorChosen &&
