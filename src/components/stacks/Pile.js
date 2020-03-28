@@ -1,16 +1,55 @@
-import React from 'react'
-import Card from '../Card'
+import React, { Component } from 'react'
+import socketIO from "socket.io-client"
 
-function Pile(props) {
-  return (
-    <div>
-      <Card 
-        color={props.topCard.color}
-        number={props.topCard.number}
-        onClick={ props.updateTopCard }
-      />
-    </div>
-  )
+
+import Card from '../Card'
+import { WS_URL } from '../../paths'
+
+
+export class Pile extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      topCard: this.props.topCard,
+      endpoint: WS_URL
+    }
+    const socket = socketIO(WS_URL, {
+      transports: ['websocket'],
+      jsonp: false
+    });
+
+    this.startSocketIO = () => {
+      socket.connect();
+      
+      socket.on('connect', () => {
+        console.log('connected')
+      })
+      socket.on('disconnect', () => {
+        console.log('connection to server lost.');
+      });
+      
+      socket.on('top-card', (data) => {
+        if (this.state.topCard !== data.topCard) {
+          this.setState({topCard: data.topCard})
+        }
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.startSocketIO()
+  }
+
+  render() {
+    return (
+      <div>
+        <Card 
+          color={this.state.topCard.color}
+          number={this.state.topCard.number}
+        />
+      </div>
+    )
+  }
 }
 
 export default Pile
