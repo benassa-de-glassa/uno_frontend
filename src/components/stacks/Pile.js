@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import socketIO from "socket.io-client"
 
 
@@ -50,6 +51,10 @@ export class Pile extends Component {
       </div>
     )
   }
+}
+
+Pile.propTypes = {
+  topCard: PropTypes.object
 }
 
 export default Pile

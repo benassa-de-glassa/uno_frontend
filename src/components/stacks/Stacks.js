@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types';
+
 import Deck from './Deck'
 import Pile from './Pile'
 import GameState from './GameState'
@@ -17,6 +19,10 @@ function Stacks(props) {
       </div>
     </div>
   )
+}
+
+Stacks.propTypes = {
+  topCard: PropTypes.object
 }
 
 
