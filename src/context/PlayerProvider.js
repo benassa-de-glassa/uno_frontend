@@ -129,7 +129,7 @@ class PlayerProvider extends Component {
   }
 
   async sayUno() {
-    this.props.sayUno(this.state.player_id)
+    this.props.sayUno(this.state.player.id)
   }
 
   clearPlayer() {
