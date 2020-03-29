@@ -19,7 +19,7 @@ export class OtherPlayers extends Component {
             ? {'backgroundColor': 'lightgreen', 'border': '1px solid green'}
             : {}}
         >
-          {player.name}
+          <p>{player.name} <strong>[{(player.saidUno) ? "UNO" : player.numberOfCards}]</strong></p>
         </div>
       )
     })
