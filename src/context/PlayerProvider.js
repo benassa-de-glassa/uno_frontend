@@ -45,8 +45,8 @@ class PlayerProvider extends Component {
       .then( d => { 
         console.log(d) 
         if (d[0]) { 
-          var d = new Date()
-          var n = d.getTime()
+          let d = new Date()
+          let n = d.getTime()
           this.props.cardPlayedAt(n)
           this.setState({canChooseColor: true, cardPickedUp: false})
           this.updateCards()
@@ -67,8 +67,8 @@ class PlayerProvider extends Component {
       .then( d => { 
         console.log(d); 
         if ( d[0] ) {
-          var d = new Date()
-          n = d.getTime()
+          let d = new Date()
+          let n = d.getTime()
           this.props.cardPlayedAt(n)
           this.setState({cardPickedUp: false})
           this.updateCards()

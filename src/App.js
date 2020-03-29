@@ -64,6 +64,7 @@ class App extends Component {
     this.resetGame = this.resetGame.bind(this);
     this.colorSelected = this.colorSelected.bind(this);
     this.sayUno = this.sayUno.bind(this);
+    this.cardPlayedAt = this.cardPlayedAt.bind(this);
 
     this.DEBUG = true
   }
@@ -149,13 +150,13 @@ class App extends Component {
     this.setState({lastPlayed: time})
   }
 
-  sayUno(player_id) {
+  async sayUno(player_id) {
     var d = new Date();
     var n = d.getTime();
 
-    console.log("time since last played (s)", (n-lastPlayed)/1000)
+    console.log("time since last played (s)", (n-this.state.lastPlayed)/1000)
 
-    if ( (n - this.state.lastPlayed < 3000) || (activePlayerName === this.state.player.id) ) {
+    if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === this.state.player.id) ) {
       var url = new URL(API_URL);
       url.pathname += "game/say_uno" 
       url.searchParams.append("player_id", player_id)
@@ -183,6 +184,7 @@ class App extends Component {
         cards={this.state.cards}
         colorSelected={this.colorSelected}
         sayUno={this.sayUno}
+        cardPlayedAt={this.cardPlayedAt}
       >
         <PlayerContext.Consumer>
           { context => 
