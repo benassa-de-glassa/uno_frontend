@@ -6,7 +6,6 @@ import { API_URL } from '../paths'
 class PlayerProvider extends Component {
   constructor(props){
     super(props)
-    this.props = props
     this.state = {
       player: {
         id: undefined,
@@ -14,7 +13,6 @@ class PlayerProvider extends Component {
       },
       canChooseColor: false,
       cardPickedUp: false,
-      saidUno: false,
     }
     this.dealInitialCards = this.dealInitialCards.bind(this);
     this.updateCards = this.updateCards.bind(this);
@@ -46,13 +44,16 @@ class PlayerProvider extends Component {
     response.json()
       .then( d => { 
         console.log(d) 
-        if (d[0]) { this.setState({canChooseColor: true}) }
+        if (d[0]) { 
+          var d = new Date()
+          var n = d.getTime()
+          this.props.cardPlayedAt(n)
+          this.setState({canChooseColor: true, cardPickedUp: false})
+          this.updateCards()
+          this.props.updateTopCard()
+          this.props.updateActivePlayer()
+        }
       })
-
-    this.setState({cardPickedUp: false})
-    this.updateCards()
-    this.props.updateTopCard()
-    this.props.updateActivePlayer()
   }
 
   async playCard (card_id) {
@@ -63,12 +64,20 @@ class PlayerProvider extends Component {
     
     const response = await fetch(url, {method:'POST'})
     response.json()
-      .then( d => { console.log(d) } )
+      .then( d => { 
+        console.log(d); 
+        if ( d[0] ) {
+          var d = new Date()
+          n = d.getTime()
+          this.props.cardPlayedAt(n)
+          this.setState({cardPickedUp: false})
+          this.updateCards()
+          this.props.updateTopCard()
+          this.props.updateActivePlayer()
+        }
+      })
     
-    this.setState({cardPickedUp: false})
-    this.updateCards()
-    this.props.updateTopCard()
-    this.props.updateActivePlayer()
+    
   }
 
   async pickupCard() {
@@ -120,16 +129,7 @@ class PlayerProvider extends Component {
   }
 
   async sayUno() {
-    var url = new URL(API_URL);
-    url.pathname += "game/say_uno" 
-    url.searchParams.append("player_id", this.state.player.id)
-    
-    const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { 
-        console.log(d);
-        if (d[0]) { this.setState({saidUno: true})}
-      })
+    this.props.sayUno(this.state.player_id)
   }
 
   clearPlayer() {
