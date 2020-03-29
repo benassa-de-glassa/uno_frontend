@@ -35,7 +35,8 @@ export class GameState extends Component {
           penalty: data.penalty,
           colorChosen: data.colorChosen,
           chosenColor: data.chosenColor,
-          activePlayerName: data.activePlayerName
+          activePlayerName: data.activePlayerName,
+          forward: data.forward,
         })
       })
     }
@@ -46,15 +47,20 @@ export class GameState extends Component {
   }
 
   render() {
+    var directionSymbol;
+    if (this.state.forward) { directionSymbol = "\u21BA" }
+    else { directionSymbol = "\u21BB"}
+
     return (
       <div>
-        <p><strong>{this.state.activePlayerName}</strong>'s turn</p>
+        <p className="mb-1"><strong>{this.state.activePlayerName}</strong>'s turn</p>
+        <h3>{directionSymbol}</h3>
         { this.state.penalty !== 0 && 
           <h3>+{this.state.penalty}</h3>
         }
         { this.state.colorChosen &&
            <svg height="100" width="100">
-             <circle cx="50" cy="50" r="20" stroke="black" strokeWidth="2" fill={this.state.chosenColor} />
+             <circle cx="21" cy="21" r="20" stroke="black" strokeWidth="2" fill={this.state.chosenColor} />
            </svg> 
         }
       </div>

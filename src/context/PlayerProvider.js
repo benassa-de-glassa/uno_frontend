@@ -48,9 +48,11 @@ class PlayerProvider extends Component {
         console.log(d) 
         if (d[0]) { this.setState({canChooseColor: true}) }
       })
-      this.updateCards()
-      this.props.updateTopCard()
-      this.props.updateActivePlayer()
+
+    this.setState({cardPickedUp: false})
+    this.updateCards()
+    this.props.updateTopCard()
+    this.props.updateActivePlayer()
   }
 
   async playCard (card_id) {
@@ -63,6 +65,7 @@ class PlayerProvider extends Component {
     response.json()
       .then( d => { console.log(d) } )
     
+    this.setState({cardPickedUp: false})
     this.updateCards()
     this.props.updateTopCard()
     this.props.updateActivePlayer()
@@ -114,7 +117,6 @@ class PlayerProvider extends Component {
 
     this.setState({canChooseColor: false})
     this.props.colorSelected(color)
-
   }
 
   async sayUno() {
