@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 export class ChatLog extends Component {
   constructor(props) {
@@ -6,7 +7,6 @@ export class ChatLog extends Component {
     this.state = {
       showServerLog: true,
     }
-    this.props = props
   }
   render() {
     return (
@@ -38,5 +38,8 @@ export class ChatLog extends Component {
     )
   }
 }
+ChatLog.propTypes = {
+  messages: PropTypes.array
+};
 
 export default ChatLog

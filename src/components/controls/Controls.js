@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 import { Button } from 'react-bootstrap'
 
@@ -19,6 +20,10 @@ export class Controls extends Component {
   }
 }   
 
+Controls.propTypes = {
+  gameStarted: PropTypes.bool,
+  startGame: PropTypes.func
+}
 
 
 export default Controls

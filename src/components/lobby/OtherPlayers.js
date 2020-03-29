@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types';
 
 export class OtherPlayers extends Component {
   //constructor(props){
@@ -15,7 +16,7 @@ export class OtherPlayers extends Component {
           className="sidebar-player-list" 
           key={player.id} 
           style={(player.id === this.props.turn) 
-            ? {'backgroundColor': 'green'}
+            ? {'backgroundColor': 'lightgreen', 'border': '1px solid green'}
             : {}}
         >
           <p>{player.name} <strong>[{(player.saidUno) ? "UNO" : player.numberOfCards}]</strong></p>
@@ -30,5 +31,11 @@ export class OtherPlayers extends Component {
     )
   }
 }
+
+OtherPlayers.propTypes = {
+  playerList: PropTypes.array,
+  turn: PropTypes.number
+};
+
 
 export default OtherPlayers
