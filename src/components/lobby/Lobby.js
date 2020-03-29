@@ -30,7 +30,7 @@ export class Lobby extends Component {
       });
 
       socket.on('player-list', (data) => {
-        console.log(data);
+        //console.log(data);
         this.setState({messages: data.messages});
         if (this.state.player !== data.playerList || this.state.turn !== data.turn) {
           this.setState({ player: data.playerList, turn: data.turn })

@@ -30,7 +30,7 @@ export class GameState extends Component {
       });
 
       socket.on('gamestate', (data) => {
-        console.log("gamestate:", data);
+        // console.log("gamestate:", data);
         this.setState({
           penalty: data.penalty,
           colorChosen: data.colorChosen,
