@@ -33,9 +33,11 @@ class App extends Component {
         name: "",
         id: undefined,
       },
+      saidUno: false,
       currentPenalty: 0,
       colorChosen: false,
       chosenColor: "",
+      lastPlayed: 0,
       messages: [
         {id:0, time: "12:03", sender: "server", text: "hello"},
         {id:1, time: "12:04", sender: "server", text: "this is chat"},
@@ -61,6 +63,8 @@ class App extends Component {
     this.updateActivePlayer = this.updateActivePlayer.bind(this);
     this.resetGame = this.resetGame.bind(this);
     this.colorSelected = this.colorSelected.bind(this);
+    this.sayUno = this.sayUno.bind(this);
+    this.cardPlayedAt = this.cardPlayedAt.bind(this);
 
     this.DEBUG = true
   }
@@ -141,6 +145,32 @@ class App extends Component {
   colorSelected(color) {
     this.setState({colorChosen: true, chosenColor: color})
   }
+
+  cardPlayedAt(time) {
+    this.setState({lastPlayed: time})
+  }
+
+  async sayUno(player_id) {
+    var d = new Date();
+    var n = d.getTime();
+
+    console.log("time since last played (s)", (n-this.state.lastPlayed)/1000)
+
+    if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === this.state.player.id) ) {
+      var url = new URL(API_URL);
+      url.pathname += "game/say_uno" 
+      url.searchParams.append("player_id", player_id)
+
+      const response = await fetch(url, {method:'POST'})
+      response.json()
+        .then( d => { 
+          console.log(d);
+          if (d[0]) { this.setState({saidUno: true})}
+        })
+      } else {
+        alert("Oops, you didn't say uno in time!")
+      }
+  }
   
 
   render () {
@@ -153,6 +183,8 @@ class App extends Component {
         dealInitialCards={this.dealInitialCards}
         cards={this.state.cards}
         colorSelected={this.colorSelected}
+        sayUno={this.sayUno}
+        cardPlayedAt={this.cardPlayedAt}
       >
         <PlayerContext.Consumer>
           { context => 
@@ -216,7 +248,7 @@ class App extends Component {
                     }
                   </div>
                   <div className="col-4">
-                    <Lobby messages={this.state.messages}/>
+                    <Lobby messages={this.state.messages} player={context.state.player.name}/>
                   </div>
                 </div>
               </div>

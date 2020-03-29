@@ -47,13 +47,14 @@ div.chatbox {
 div.servermessage {
   background-color: rgb(250, 243, 210);
   border-radius: 5px;
-  border: 1px solid lightblue
+  border: 1px solid lightblue;
 }
 
 div.message {
   background-color: rgb(255, 218, 204);
   border-radius: 5px;
-  border: 1px solid darksalmon
+  border: 1px solid darksalmon;
+
 }
 
 div.sidebar-player-list {
