@@ -47,6 +47,7 @@ export class Pile extends Component {
         <Card 
           color={this.state.topCard.color}
           number={this.state.topCard.number}
+          onClick={()=>{}}
         />
       </div>
     )
