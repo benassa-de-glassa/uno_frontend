@@ -11,12 +11,11 @@ import Stacks from './components/stacks/Stacks'
 import Player from './components/player/Player'
 import Lobby from './components/lobby/Lobby'
 
-// if DEBUG
 import { Button, Navbar, NavItem } from 'react-bootstrap'
 
-// import SideBarWebSocket from './components/lobby/SideBarWebSocket'
+import socketIO from "socket.io-client"
 
-import {API_URL} from './paths'
+import { API_URL, WS_URL} from './paths'
 
 class App extends Component {
   constructor() {
@@ -25,6 +24,7 @@ class App extends Component {
       loggedIn: false,
       gameStarted: false,
       initialCardsDealt: false,
+      isActive: false,
       players: [],
       topCard: {id: 999, color:"grey", number:""},
       activePlayerName: "",
@@ -67,6 +67,28 @@ class App extends Component {
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
 
     this.DEBUG = true
+
+    const socket = socketIO(WS_URL, {
+      transports: ['websocket'], 
+      jsonp: false
+    })
+
+    this.startSocketIO = () => {
+      socket.connect();
+  
+      socket.on('connect', () => {
+        console.log('connection to gamestate successful')
+      })
+      socket.on('disconnect', () => {
+        console.log('connection to socket.io lost.');
+      });
+  
+      socket.on('gamestate', (data) => {
+        // console.log("gamestate:", data);
+        this.setState({isActive: data.activePlayerName === this.state.player.name})
+      })
+    }
+
   }
 
   async startGame() { 
@@ -171,6 +193,10 @@ class App extends Component {
         alert("Oops, you didn't say uno in time!")
       }
   }
+
+  componentDidMount() {
+    this.startSocketIO()
+  }
   
 
   render () {
@@ -242,6 +268,7 @@ class App extends Component {
                 currentPenalty={this.state.currentPenalty}
                 colorChosen={this.state.colorChosen}
                 chosenColor={this.state.chosenColor}
+                isActive={this.state.isActive}
               />
               <Player/>
             </div>
