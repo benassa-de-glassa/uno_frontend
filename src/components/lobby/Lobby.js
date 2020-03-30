@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import socketIO from "socket.io-client"
 import { WS_URL } from '../../paths'
+import { API_URL } from '../../paths'
 import OtherPlayers from './OtherPlayers'
 import ChatLog from './ChatLog'
 
@@ -12,43 +13,73 @@ export class Lobby extends Component {
       player: [],
       turn: null,
       endpoint: WS_URL,
-      messages: [],
+      messages: [{
+        "id": -1, 
+        "sender": "Hedwig und Storch", 
+        "text": "Viel Spass mit Inegleit Online!", 
+        "time": "" 
+      }],
     }
-    const socket = socketIO(WS_URL, {
+
+    this.sendMessage = this.sendMessage.bind(this)
+
+    this.socket = socketIO(WS_URL, {
       transports: ['websocket'],
       jsonp: false
     });
 
     this.startSocketIO = () => {
-      socket.connect();
+      this.socket.connect();
 
-      socket.on('connect', () => {
+      this.socket.on('connect', () => {
         console.log('connection to socket.io successful')
       })
-      socket.on('disconnect', () => {
+      this.socket.on('disconnect', () => {
         console.log('connection to socket.io lost.');
       });
 
-      socket.on('player-list', (data) => {
-        //console.log(data);
-        this.setState({messages: data.messages});
+      this.socket.on('player-list', (data) => {
         if (this.state.player !== data.playerList || this.state.turn !== data.turn) {
           this.setState({ player: data.playerList, turn: data.turn })
+        }
+      })
+
+      this.socket.on('player-message', data => {
+        if (this.state.messages[-1] !== data.message) {
+          this.setState(previousState => {
+            return {
+              messages: [...previousState.messages, data.message]
+            }
+          })
         }
       })
     }
   }
 
-
   componentDidMount() {
     this.startSocketIO()
+  }
+
+  async sendMessage(message) {
+    var url = new URL(API_URL);
+    url.pathname += "lobby/send_message" 
+    url.searchParams.append("player_name", this.props.player)
+
+    url.searchParams.append("client_message", message)
+
+    await fetch(url, {method:'POST'})
+
   }
 
   render() {
     return (
       <div className="container lobby">
         <OtherPlayers playerList={this.state.player} turn={this.state.turn} />
-        <ChatLog messages={this.state.messages} />
+        <ChatLog 
+          messages={this.state.messages} 
+          onSubmit={this.sendMessage} 
+          playerHasRegistered={this.props.player !== ""}
+        />
       </div>
     )
   }

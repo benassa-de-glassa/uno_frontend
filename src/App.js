@@ -275,7 +275,7 @@ class App extends Component {
                     }
                   </div>
                   <div className="col-4">
-                    <Lobby messages={this.state.messages}/>
+                    <Lobby messages={this.state.messages} player={context.state.player.name}/>
                   </div>
                 </div>
               </div>
