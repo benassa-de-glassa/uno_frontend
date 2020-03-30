@@ -178,7 +178,7 @@ class App extends Component {
 
     console.log("time since last played (s)", (n-this.state.lastPlayed)/1000)
 
-    if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === this.state.player.id) ) {
+    if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === player_id) ) {
       var url = new URL(API_URL);
       url.pathname += "game/say_uno" 
       url.searchParams.append("player_id", player_id)
@@ -249,8 +249,6 @@ class App extends Component {
             </Fragment>
                 }
               </Navbar>
-    
-      
               <div className="container">
                 <div className="row">
                   <div className="col-8">
