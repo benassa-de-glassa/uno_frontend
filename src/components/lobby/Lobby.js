@@ -12,6 +12,7 @@ export class Lobby extends Component {
     this.state = {
       player: [],
       turn: null,
+      messages: []
       //messages: [{
       //  "id": -1, 
       //  "sender": "Hedwig und Storch", 
