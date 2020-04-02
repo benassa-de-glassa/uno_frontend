@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+
+import { Button } from 'react-bootstrap'
 import PropTypes from 'prop-types';
 
 export class ChatLog extends Component {
@@ -54,9 +56,9 @@ export class ChatLog extends Component {
         </div>
         
         { 
-          this.props.playerHasRegistered ? 
-            <button onClick={this.handleSubmit}> Send </button> :
-            <button onClick={() => {}}> Please enter your name first</button>  
+          this.props.playerHasRegistered 
+            ? <Button onClick={this.handleSubmit}> Send </Button> 
+            : <Button disabled> Please enter your name first</Button>  
         }
       </div>
 

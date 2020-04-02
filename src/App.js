@@ -11,12 +11,11 @@ import Stacks from './components/stacks/Stacks'
 import Player from './components/player/Player'
 import Lobby from './components/lobby/Lobby'
 
-// if DEBUG
 import { Button, Navbar, NavItem } from 'react-bootstrap'
 
-// import SideBarWebSocket from './components/lobby/SideBarWebSocket'
+import socketIO from "socket.io-client"
 
-import {API_URL} from './paths'
+import { API_URL, WS_URL} from './paths'
 
 class App extends Component {
   constructor() {
@@ -25,6 +24,7 @@ class App extends Component {
       loggedIn: false,
       gameStarted: false,
       initialCardsDealt: false,
+      isActive: false,
       players: [],
       topCard: {id: 999, color:"grey", number:""},
       activePlayerName: "",
@@ -67,6 +67,28 @@ class App extends Component {
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
 
     this.DEBUG = true
+
+    const socket = socketIO(WS_URL, {
+      transports: ['websocket'], 
+      jsonp: false
+    })
+
+    this.startSocketIO = () => {
+      socket.connect();
+  
+      socket.on('connect', () => {
+        console.log('connection to gamestate successful')
+      })
+      socket.on('disconnect', () => {
+        console.log('connection to socket.io lost.');
+      });
+  
+      socket.on('gamestate', (data) => {
+        // console.log("gamestate:", data);
+        this.setState({isActive: data.activePlayerName === this.state.player.name})
+      })
+    }
+
   }
 
   async startGame() { 
@@ -156,7 +178,7 @@ class App extends Component {
 
     console.log("time since last played (s)", (n-this.state.lastPlayed)/1000)
 
-    if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === this.state.player.id) ) {
+    if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === player_id) ) {
       var url = new URL(API_URL);
       url.pathname += "game/say_uno" 
       url.searchParams.append("player_id", player_id)
@@ -170,6 +192,10 @@ class App extends Component {
       } else {
         alert("Oops, you didn't say uno in time!")
       }
+  }
+
+  componentDidMount() {
+    this.startSocketIO()
   }
   
 
@@ -223,8 +249,6 @@ class App extends Component {
             </Fragment>
                 }
               </Navbar>
-    
-      
               <div className="container">
                 <div className="row">
                   <div className="col-8">
@@ -242,6 +266,7 @@ class App extends Component {
                 currentPenalty={this.state.currentPenalty}
                 colorChosen={this.state.colorChosen}
                 chosenColor={this.state.chosenColor}
+                isActive={this.state.isActive}
               />
               <Player/>
             </div>
