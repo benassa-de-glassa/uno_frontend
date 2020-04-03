@@ -7,7 +7,10 @@ import GameState from './GameState'
 
 function Stacks(props) {
   return (
-    <div className="row">
+    <div className="row" 
+      style={(props.isActive) 
+        ? {'backgroundColor': 'lightgreen', 'border': '1px solid green'}
+        : {'backgroundColor': 'white'}}>
       <div className="col-md-auto">
         <Deck />
       </div>
@@ -15,7 +18,7 @@ function Stacks(props) {
         <Pile topCard={props.topCard}/>
       </div> 
       <div className="col-md-auto">
-        <GameState/>
+        <GameState isActive={props.isActive}/>
       </div>
     </div>
   )

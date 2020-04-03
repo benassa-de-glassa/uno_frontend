@@ -60,7 +60,7 @@ export class GameState extends Component {
         }
         { this.state.colorChosen &&
            <svg height="100" width="100">
-             <circle cx="21" cy="21" r="20" stroke="black" strokeWidth="2" fill={this.state.chosenColor} />
+             <circle cx="16" cy="16" r="15" stroke="black" strokeWidth="2" fill={this.state.chosenColor} />
            </svg> 
         }
       </div>

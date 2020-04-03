@@ -12,13 +12,12 @@ export class Lobby extends Component {
     this.state = {
       player: [],
       turn: null,
-      endpoint: WS_URL,
-      messages: [{
-        "id": -1, 
-        "sender": "Hedwig und Storch", 
-        "text": "Viel Spass mit Inegleit Online!", 
-        "time": "" 
-      }],
+      //messages: [{
+      //  "id": -1, 
+      //  "sender": "Hedwig und Storch", 
+      //  "text": "Viel Spass mit Inegleit Online!", 
+      //  "time": "" 
+      //}],
     }
 
     this.sendMessage = this.sendMessage.bind(this)
@@ -45,12 +44,8 @@ export class Lobby extends Component {
       })
 
       this.socket.on('player-message', data => {
-        if (this.state.messages[-1] !== data.message) {
-          this.setState(previousState => {
-            return {
-              messages: [...previousState.messages, data.message]
-            }
-          })
+        if (this.state.messages.length && this.state.message.id !== data.message.id) {
+          this.setState( previousState => ( {messages: [...previousState.messages, data.message]} ) )
         }
       })
     }
