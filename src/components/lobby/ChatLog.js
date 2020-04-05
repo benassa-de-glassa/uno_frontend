@@ -12,6 +12,8 @@ export class ChatLog extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.onEnterKey = this.onEnterKey.bind(this)
+
   }
 
   handleChange(event) {
@@ -21,6 +23,12 @@ export class ChatLog extends Component {
   handleSubmit(event) {
     this.props.onSubmit(this.state.message)
     this.setState({message: ''})
+  }
+
+  onEnterKey(event) {
+    if (event.key === 'Enter' && event.shiftKey === false ) {
+      this.handleSubmit()
+    }
   }
 
 
@@ -50,9 +58,11 @@ export class ChatLog extends Component {
           <textarea 
             value={this.state.message}
             onChange={this.handleChange}
+            onKeyUp={this.onEnterKey}
             className="form-control pl-2 my-0" 
             rows="2" 
-            placeholder="Type your message here..."></textarea>
+            placeholder="Type your message here...">
+          </textarea>
         </div>
         
         { 
