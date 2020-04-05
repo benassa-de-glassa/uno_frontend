@@ -39,8 +39,8 @@ export class ChatLog extends Component {
             } else {
               return (
                 <div className="container message my-0" key={msg.id}>
-                  <p className="m-1 p-0">{msg.time} <strong>{msg.sender}</strong> </p>
-                  <p className="m-1 p-0">{msg.text}</p>
+                  <p className="m-1 p-0"><strong>{msg.sender}</strong> [{msg.time}]</p>
+                  <p className="m-0 p-0">{msg.text}</p>
                 </div>
               )
             }
