@@ -38,22 +38,7 @@ class App extends Component {
       colorChosen: false,
       chosenColor: "",
       lastPlayed: 0,
-      messages: [
-        {id:0, time: "12:03", sender: "server", text: "hello"},
-        {id:1, time: "12:04", sender: "server", text: "this is chat"},
-        {id:2, time: "12:05", sender: "server", text: "pleaz read"},
-        {id:3, time: "12:06", sender: "server", text: "tank yu"},
-        {id:4, time: "12:03", sender: "server", text: "hello"},
-        {id:5, time: "12:03", sender: "server", text: "hello"},
-        {id:6, time: "12:03", sender: "server", text: "hello"},
-        {id:7, time: "12:03", sender: "server", text: "hello"},
-        {id:8, time: "12:03", sender: "server", text: "hello"},
-        {id:9, time: "12:03", sender: "server", text: "hello"},
-        {id:10, time: "12:03", sender: "server", text: "hello"},
-        {id:11, time: "12:03", sender: "server", text: "hello"},
-        {id:12, time: "12:03", sender: "Lara", text: "INEGLEIT"},
-        {id:13, time: "12:03", sender: "server", text: "hello"},
-      ]
+
     }
     this.startGame = this.startGame.bind(this);
     this.playerLoggedIn = this.playerLoggedIn.bind(this);
@@ -189,9 +174,13 @@ class App extends Component {
           console.log(d);
           if (d[0]) { this.setState({saidUno: true})}
         })
-      } else {
-        alert("Oops, you didn't say uno in time!")
-      }
+    } else {
+      alert("Oops, you didn't say uno in time!")
+    }
+  }
+
+  componentDidMount() {
+    this.startSocketIO()
   }
 
   componentDidMount() {

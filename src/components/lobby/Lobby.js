@@ -12,12 +12,7 @@ export class Lobby extends Component {
     this.state = {
       player: [],
       turn: null,
-      //messages: [{
-      //  "id": -1, 
-      //  "sender": "Hedwig und Storch", 
-      //  "text": "Viel Spass mit Inegleit Online!", 
-      //  "time": "" 
-      //}],
+      messages: []
     }
 
     this.sendMessage = this.sendMessage.bind(this)
