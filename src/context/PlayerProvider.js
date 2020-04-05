@@ -144,9 +144,7 @@ class PlayerProvider extends Component {
           props: this.props,
           dealInitialCards: this.dealInitialCards,
           updateCards: this.updateCards,
-          updateUser: player => { 
-            player.then(player => this.setState({player:player}))
-          },
+          updateUser: player => this.setState(player),
           playCard: this.playCard,
           playBlackCard: this.playBlackCard,
           chooseColor: this.chooseColor,

@@ -182,7 +182,6 @@ class App extends Component {
   componentDidMount() {
     this.startSocketIO()
   }
-  
 
   render () {
     return (
