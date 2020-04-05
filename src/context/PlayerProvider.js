@@ -14,6 +14,7 @@ class PlayerProvider extends Component {
       canChooseColor: false,
       cardPickedUp: false,
     }
+    this.setPlayer = this.setPlayer.bind(this);
     this.dealInitialCards = this.dealInitialCards.bind(this);
     this.updateCards = this.updateCards.bind(this);
     this.playBlackCard = this.playBlackCard.bind(this);
@@ -23,6 +24,10 @@ class PlayerProvider extends Component {
     this.chooseColor = this.chooseColor.bind(this);
     this.sayUno = this.sayUno.bind(this);
     this.clearPlayer = this.clearPlayer.bind(this);
+  }
+
+  setPlayer(player) {
+    this.setState({player: player})
   }
 
   async dealInitialCards () {
@@ -144,7 +149,7 @@ class PlayerProvider extends Component {
           props: this.props,
           dealInitialCards: this.dealInitialCards,
           updateCards: this.updateCards,
-          updateUser: player => this.setState(player),
+          setPlayer: this.setPlayer,
           playCard: this.playCard,
           playBlackCard: this.playBlackCard,
           chooseColor: this.chooseColor,
