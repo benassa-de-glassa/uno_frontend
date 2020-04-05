@@ -79,3 +79,12 @@ div.sidebar-player-list {
   border-radius: 5px;
   padding-left: 10px;
 }
+
+div.info {
+  width: 100px;
+  height: 100px;
+  background-color: lightblue;
+  position: absolute;
+  top: 50%;
+  z-index: 99;
+}

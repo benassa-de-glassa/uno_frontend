@@ -38,7 +38,7 @@ class App extends Component {
       colorChosen: false,
       chosenColor: "",
       lastPlayed: 0,
-
+      notification: ["Boom, Lara het inegleit"],
     }
     this.startGame = this.startGame.bind(this);
     this.playerLoggedIn = this.playerLoggedIn.bind(this);
@@ -71,6 +71,10 @@ class App extends Component {
       socket.on('gamestate', (data) => {
         // console.log("gamestate:", data);
         this.setState({isActive: data.activePlayerName === this.state.player.name})
+      });
+
+      socket.on('notification', (data) => {
+        this.setState({notifications: data})
       })
     }
 
@@ -251,6 +255,7 @@ class App extends Component {
                 colorChosen={this.state.colorChosen}
                 chosenColor={this.state.chosenColor}
                 isActive={this.state.isActive}
+                notifications={this.state.notification}
               />
               <Player/>
             </div>
