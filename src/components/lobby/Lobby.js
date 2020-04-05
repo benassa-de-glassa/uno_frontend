@@ -39,9 +39,7 @@ export class Lobby extends Component {
       })
 
       this.socket.on('player-message', data => {
-        if (this.state.messages.length && this.state.message.id !== data.message.id) {
-          this.setState( previousState => ( {messages: [...previousState.messages, data.message]} ) )
-        }
+        this.setState( previousState => ( {messages: [...previousState.messages, data.message]} ) )
       })
     }
   }
