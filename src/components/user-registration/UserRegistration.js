@@ -26,16 +26,26 @@ export class UserRegistration extends Component {
   }
   async handleSubmit(event, context) {
     event.preventDefault()
-    // if the id is undefined a new user is registered with the server, else just the name is updated
+    
     var url = new URL(API_URL)
     url.pathname += 'game/add_player'
     url.searchParams.append("player_name", this.state.value)
 
-    this.props.playerLoggedIn();
-    this.setState({value: ""})
+    this.setState({value: ""}) // clear input
     
     const response = await fetch(url, {method:'POST'})
-    return await response.json()
+    const responseJSON = await response.json()
+
+    console.log(responseJSON)
+
+    // The response is either
+    // [true, player(JSON)] or [false, "reason" (str)]
+    if (responseJSON[0]) {
+      this.props.playerLoggedIn()
+      context.setPlayer(responseJSON[1])
+    } else {
+      console.log(responseJSON[1])
+    }
   }
 
   render() {
@@ -44,7 +54,7 @@ export class UserRegistration extends Component {
 <PlayerContext.Consumer> 
 { context =>
 <div>
-  <Form onSubmit={ d => context.updateUser(this.handleSubmit(d, context))}>
+  <Form onSubmit={ d => this.handleSubmit(d, context)}>
     <FormGroup>
       <FormLabel>Name:</FormLabel>
         <FormControl 
@@ -52,7 +62,8 @@ export class UserRegistration extends Component {
           placeholder="Enter your name"
           id="usr" 
           value={this.state.value} 
-                onChange={this.handleChange} />
+          onChange={this.handleChange} 
+        />
     </FormGroup>
     <Button type="submit">Submit</Button>
   </Form>
