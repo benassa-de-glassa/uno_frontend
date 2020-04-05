@@ -8,10 +8,10 @@ import Notifications from './Notifications'
 
 function Stacks(props) {
   return (
-    <div className="row" 
+    <div className="row stacks" 
       style={(props.isActive) 
-        ? {'backgroundColor': 'lightgoldenrodyellow', 'border': '2px solid yellow', 'backgroundRadius': '5px'}
-        : {'backgroundColor': 'white'}}>
+        ? {'backgroundColor': 'lightgoldenrodyellow', 'border': '2px solid yellow'}
+        : {'backgroundColor': 'white', 'border': "0px solid grey"}}>
       <div className="col-md-auto">
         <Deck />
       </div>

@@ -1,3 +1,7 @@
+div#root {
+  padding: 0;
+}
+
 div.card {
   width: 96px;
   height: 150px;
@@ -47,6 +51,10 @@ button.uno {
 .topbar {
   background-color: darksalmon;
   margin-bottom: 20px
+}
+
+div.stacks {
+  margin: 0;
 }
 
 div.lobby {
