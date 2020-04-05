@@ -183,11 +183,6 @@ class App extends Component {
     this.startSocketIO()
   }
 
-  componentDidMount() {
-    this.startSocketIO()
-  }
-  
-
   render () {
     return (
       <PlayerProvider 
