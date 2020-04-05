@@ -9,9 +9,18 @@ div.card {
   border: 2px solid black;
 }
 
-#turnedcard.card{
+#turnedcard.card {
   background-image: url("static/uno_logo.png");
-  background-size: 80px;
+  background-size: 70px;
+  background-position-x: center;
+  background-position-y: center;
+  background-color: black;
+  background-repeat: no-repeat;
+}
+
+#colorselect.card {
+  background-image: url("static/uno_logo.png");
+  background-size: 70px;
   background-position-x: center;
   background-position-y: center;
   background-color: black;
