@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import socketIO from "socket.io-client"
+
 import './App.css';
 
 import PlayerProvider from './context/PlayerProvider'
 import PlayerContext from './context/PlayerContext'
-
 
 import UserRegistration from './components/user-registration/UserRegistration'
 import Controls from './components/controls/Controls'
@@ -13,7 +14,6 @@ import Lobby from './components/lobby/Lobby'
 
 import { Button, Navbar, NavItem } from 'react-bootstrap'
 
-import socketIO from "socket.io-client"
 
 import { API_URL, WS_URL} from './paths'
 
