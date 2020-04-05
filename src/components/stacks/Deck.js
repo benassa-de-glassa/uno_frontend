@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 
 import PlayerContext from '../../context/PlayerContext'
 
-import unologo from './images/uno_logo.png'
-
 // Aufnahmestapel
 export class Deck extends Component {
 
@@ -11,11 +9,7 @@ export class Deck extends Component {
     return (
       <PlayerContext.Consumer>
         { context =>
-          <div className="card" id="turnedcard" style={{background: "black"}}
-            onClick={ context.pickupCard }
-          >
-            <img src={unologo} alt="" width="80%" style={{marginTop: "60%", marginLeft: "5%"}}/>
-          </div>
+          <div className="card" id="turnedcard" onClick={ context.pickupCard }></div>
         }
       </PlayerContext.Consumer>
     )
