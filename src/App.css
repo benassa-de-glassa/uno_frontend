@@ -10,8 +10,8 @@ div.card {
 }
 
 #turnedcard.card {
-  background-image: url("static/uno_logo.png");
-  background-size: 70px;
+  background-image: url("static/design3_by_lara.png");
+  background-size: 90px;
   background-position-x: center;
   background-position-y: center;
   background-color: black;
@@ -80,11 +80,16 @@ div.sidebar-player-list {
   padding-left: 10px;
 }
 
-div.info {
-  width: 100px;
-  height: 100px;
-  background-color: lightblue;
+div.inegleit {
+  display: block;
+  background-image: url("static/design2_by_lara.png");
+  background-size: 150px;
+  background-repeat: no-repeat;
+  /* background-color: black; */
+  width: 150px;
+  height: 150px;  
   position: absolute;
-  top: 50%;
+  top: 20%;
+  left: 40%;
   z-index: 99;
 }

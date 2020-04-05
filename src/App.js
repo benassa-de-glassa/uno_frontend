@@ -39,6 +39,7 @@ class App extends Component {
       chosenColor: "",
       lastPlayed: 0,
       notification: ["Boom, Lara het inegleit"],
+      inegleitIconVisible: false,
     }
     this.startGame = this.startGame.bind(this);
     this.playerLoggedIn = this.playerLoggedIn.bind(this);
@@ -73,8 +74,9 @@ class App extends Component {
         this.setState({isActive: data.activePlayerName === this.state.player.name})
       });
 
-      socket.on('notification', (data) => {
-        this.setState({notifications: data})
+      socket.on('inegleit', async function (data) {
+        this.setState({inegleitIconVisible: true})
+        setTimeout( () => this.setState({inegleitIconVisible: false}) ) 
       })
     }
 
@@ -203,6 +205,8 @@ class App extends Component {
         <PlayerContext.Consumer>
           { context => 
             <div className="App">
+              { this.state.inegleitIconVisible &&
+                <div className="inegleit"></div> }
               <Navbar className="topbar">
                 <NavItem className="mr-3">
                   <h1>Inegleit <small>Online</small></h1>
