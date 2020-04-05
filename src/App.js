@@ -94,8 +94,8 @@ class App extends Component {
     }).catch( err => console.log(err) )
   }
 
-  playerLoggedIn() {
-    this.setState({loggedIn: true})
+  playerLoggedIn(player) {
+    this.setState({loggedIn: true, player: player})
   }
 
   async dealInitialCards(player_id) {
@@ -243,7 +243,7 @@ class App extends Component {
               </Navbar>
               <div className="container">
                 <div className="row">
-                  <div className="col-8">
+                  <div className="col-8 p-0">
                     { !this.state.loggedIn &&
             <div>
               <UserRegistration playerLoggedIn={this.playerLoggedIn}/>

@@ -10,7 +10,7 @@ function Stacks(props) {
   return (
     <div className="row" 
       style={(props.isActive) 
-        ? {'backgroundColor': 'lightgreen', 'border': '1px solid green'}
+        ? {'backgroundColor': 'lightgoldenrodyellow', 'border': '2px solid yellow', 'backgroundRadius': '5px'}
         : {'backgroundColor': 'white'}}>
       <div className="col-md-auto">
         <Deck />
