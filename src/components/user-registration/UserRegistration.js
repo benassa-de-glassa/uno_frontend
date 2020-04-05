@@ -42,7 +42,7 @@ export class UserRegistration extends Component {
     // [true, player(JSON)] or [false, "reason" (str)]
     if (responseJSON[0]) {
       this.props.playerLoggedIn()
-      context.updateUser(responseJSON[1])
+      context.setPlayer(responseJSON[1])
     } else {
       console.log(responseJSON[1])
     }
