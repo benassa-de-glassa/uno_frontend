@@ -38,7 +38,8 @@ class App extends Component {
       colorChosen: false,
       chosenColor: "",
       lastPlayed: 0,
-
+      notification: ["Boom, Lara het inegleit"],
+      inegleitIconVisible: false,
     }
     this.startGame = this.startGame.bind(this);
     this.playerLoggedIn = this.playerLoggedIn.bind(this);
@@ -71,6 +72,11 @@ class App extends Component {
       socket.on('gamestate', (data) => {
         // console.log("gamestate:", data);
         this.setState({isActive: data.activePlayerName === this.state.player.name})
+      });
+
+      socket.on('inegleit', async function (data) {
+        this.setState({inegleitIconVisible: true})
+        setTimeout( () => this.setState({inegleitIconVisible: false}) ) 
       })
     }
 
@@ -88,8 +94,8 @@ class App extends Component {
     }).catch( err => console.log(err) )
   }
 
-  playerLoggedIn() {
-    this.setState({loggedIn: true})
+  playerLoggedIn(player) {
+    this.setState({loggedIn: true, player: player})
   }
 
   async dealInitialCards(player_id) {
@@ -199,6 +205,8 @@ class App extends Component {
         <PlayerContext.Consumer>
           { context => 
             <div className="App">
+              { this.state.inegleitIconVisible &&
+                <div className="inegleit"></div> }
               <Navbar className="topbar">
                 <NavItem className="mr-3">
                   <h1>Inegleit <small>Online</small></h1>
@@ -235,7 +243,7 @@ class App extends Component {
               </Navbar>
               <div className="container">
                 <div className="row">
-                  <div className="col-8">
+                  <div className="col-8 p-0">
                     { !this.state.loggedIn &&
             <div>
               <UserRegistration playerLoggedIn={this.playerLoggedIn}/>
@@ -251,6 +259,7 @@ class App extends Component {
                 colorChosen={this.state.colorChosen}
                 chosenColor={this.state.chosenColor}
                 isActive={this.state.isActive}
+                notifications={this.state.notification}
               />
               <Player/>
             </div>

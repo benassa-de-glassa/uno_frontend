@@ -1,3 +1,7 @@
+div#root {
+  padding: 0;
+}
+
 div.card {
   width: 96px;
   height: 150px;
@@ -10,8 +14,8 @@ div.card {
 }
 
 #turnedcard.card {
-  background-image: url("static/uno_logo.png");
-  background-size: 70px;
+  background-image: url("static/design3_by_lara.png");
+  background-size: 90px;
   background-position-x: center;
   background-position-y: center;
   background-color: black;
@@ -49,6 +53,10 @@ button.uno {
   margin-bottom: 20px
 }
 
+div.stacks {
+  margin: 0;
+}
+
 div.lobby {
   background-color: lightgray;
   border-radius: 5px;
@@ -78,4 +86,17 @@ div.message {
 div.sidebar-player-list {
   border-radius: 5px;
   padding-left: 10px;
+}
+
+div.inegleit {
+  display: block;
+  background-image: url("static/design2_by_lara.png");
+  background-size: 150px;
+  background-repeat: no-repeat;
+  width: 150px;
+  height: 150px;  
+  position: absolute;
+  top: 20%;
+  left: 40%;
+  z-index: 99;
 }
