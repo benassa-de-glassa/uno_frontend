@@ -55,8 +55,8 @@ class PlayerProvider extends Component {
           this.props.cardPlayedAt(n)
           this.setState({canChooseColor: true, cardPickedUp: false})
           this.updateCards()
-          this.props.updateTopCard()
-          this.props.updateActivePlayer()
+          // this.props.updateTopCard()
+          // this.props.updateActivePlayer()
         }
       })
   }
@@ -77,8 +77,8 @@ class PlayerProvider extends Component {
           this.props.cardPlayedAt(n)
           this.setState({cardPickedUp: false})
           this.updateCards()
-          this.props.updateTopCard()
-          this.props.updateActivePlayer()
+          // this.props.updateTopCard()
+          // this.props.updateActivePlayer()
         }
       })
     
@@ -102,8 +102,8 @@ class PlayerProvider extends Component {
     
     this.setState({saidUno: false})
     this.updateCards()
-    this.props.updateTopCard()
-    this.props.updateActivePlayer()
+    // this.props.updateTopCard()
+    // this.props.updateActivePlayer()
   }
 
   async cantPlay() {
@@ -116,7 +116,7 @@ class PlayerProvider extends Component {
       .then( d => { console.log(d) } )
     
     this.setState({cardPickedUp: false})
-    this.props.updateActivePlayer()
+    // this.props.updateActivePlayer()
   }
 
   async chooseColor(color) {
