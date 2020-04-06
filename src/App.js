@@ -17,6 +17,9 @@ import socketIO from "socket.io-client"
 
 import { API_URL, WS_URL} from './paths'
 
+var DEBUG = true;
+var INEGLEIT_SHOW_DURATION = 3000;
+
 class App extends Component {
   constructor() {
     super();
@@ -52,7 +55,7 @@ class App extends Component {
     this.sayUno = this.sayUno.bind(this);
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
 
-    this.DEBUG = true
+    
 
     const socket = socketIO(WS_URL, {
       transports: ['websocket'], 
@@ -74,9 +77,13 @@ class App extends Component {
         this.setState({isActive: data.activePlayerName === this.state.player.name})
       });
 
-      socket.on('inegleit', async function (data) {
+      socket.on('inegleit', (data) => {
+        console.log("now its supposed to show")
         this.setState({inegleitIconVisible: true})
-        setTimeout( () => this.setState({inegleitIconVisible: false}) ) 
+        setTimeout( () => {
+          this.setState({inegleitIconVisible: false})
+          console.log("and now its suppposed to hide")
+        }, INEGLEIT_SHOW_DURATION) 
       })
     }
 
@@ -216,7 +223,7 @@ class App extends Component {
               <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
             </NavItem>
                 } 
-                { this.DEBUG &&
+                { DEBUG &&
             <NavItem className="mr-auto">
               <Button variant="danger" onClick={ () => {
                 this.resetGame();
