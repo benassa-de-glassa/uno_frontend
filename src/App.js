@@ -41,7 +41,7 @@ class App extends Component {
       colorChosen: false,
       chosenColor: "",
       lastPlayed: 0,
-      notification: ["Notifications here"],
+      notifications: [],
       inegleitIconVisible: false,
     }
     this.startGame = this.startGame.bind(this);
@@ -64,20 +64,24 @@ class App extends Component {
       socket.connect();
   
       socket.on('connect', () => {
-        console.log('connection to gamestate successful')
+        console.log('App.js >> socket.io connection successful')
       })
       socket.on('disconnect', () => {
-        console.log('connection to socket.io lost.');
+        console.log('App.js >> connection to socket.io lost.');
       });
   
       socket.on('gamestate', (data) => {
-        // console.log("gamestate:", data);
         this.setState({isActive: data.activePlayerName === this.state.player.name})
       });
 
       socket.on('inegleit', (data) => {
+        let notification = ["BOOM! " + data.playerName + " has inegleit!"]
         this.setState({inegleitIconVisible: true})
-        setTimeout( () => this.setState({inegleitIconVisible: false}), INEGLEIT_ICON_DURATION) 
+        this.setState({notifications: notification})
+        setTimeout( () => {
+          this.setState({inegleitIconVisible: false})
+          this.setState({notifications: []})
+        }, INEGLEIT_ICON_DURATION) 
       })
     }
   }
@@ -263,7 +267,7 @@ class App extends Component {
                 colorChosen={this.state.colorChosen}
                 chosenColor={this.state.chosenColor}
                 isActive={this.state.isActive}
-                notifications={this.state.notification}
+                notifications={this.state.notifications}
               />
               <Player/>
             </div>
