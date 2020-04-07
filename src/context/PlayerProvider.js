@@ -20,12 +20,15 @@ class PlayerProvider extends Component {
     this.pickupCard = this.pickupCard.bind(this);
     this.cantPlay = this.cantPlay.bind(this);
     this.chooseColor = this.chooseColor.bind(this);
-    this.sayUno = this.sayUno.bind(this);
     this.clearPlayer = this.clearPlayer.bind(this);
   }
 
   setPlayer(player) {
     this.setState({ player: player })
+  }
+
+  clearPlayer() {
+    this.setState({ player: { name: "", id: undefined } })
   }
 
   async playCard(card_id) {
@@ -130,14 +133,6 @@ class PlayerProvider extends Component {
     }
   }
 
-  async sayUno() {
-    this.props.sayUno(this.state.player.id)
-  }
-
-  clearPlayer() {
-    this.setState({ player: { name: "", id: undefined } })
-  }
-
   render() {
     return (
       <PlayerContext.Provider
@@ -152,7 +147,7 @@ class PlayerProvider extends Component {
           chooseColor: this.chooseColor,
           pickupCard: this.pickupCard,
           cantPlay: this.cantPlay,
-          sayUno: this.sayUno,
+          sayUno: this.props.sayUno,
           clearPlayer: this.clearPlayer,
         }}
       >
