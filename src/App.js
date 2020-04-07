@@ -17,6 +17,9 @@ import socketIO from "socket.io-client"
 
 import { API_URL, WS_URL} from './paths'
 
+var DEBUG = true
+var INEGLEIT_ICON_DURATION = 3000 // ms
+
 class App extends Component {
   constructor() {
     super();
@@ -26,7 +29,7 @@ class App extends Component {
       initialCardsDealt: false,
       isActive: false,
       players: [],
-      topCard: {id: 999, color:"grey", number:""},
+      topCard: {id: 999, color:"grey", number:""}, // placeholder
       activePlayerName: "",
       cards: [],
       player: {
@@ -38,7 +41,7 @@ class App extends Component {
       colorChosen: false,
       chosenColor: "",
       lastPlayed: 0,
-      notification: ["Boom, Lara het inegleit"],
+      notification: ["Notifications here"],
       inegleitIconVisible: false,
     }
     this.startGame = this.startGame.bind(this);
@@ -51,8 +54,6 @@ class App extends Component {
     this.colorSelected = this.colorSelected.bind(this);
     this.sayUno = this.sayUno.bind(this);
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
-
-    this.DEBUG = true
 
     const socket = socketIO(WS_URL, {
       transports: ['websocket'], 
@@ -74,12 +75,11 @@ class App extends Component {
         this.setState({isActive: data.activePlayerName === this.state.player.name})
       });
 
-      socket.on('inegleit', async function (data) {
+      socket.on('inegleit', (data) => {
         this.setState({inegleitIconVisible: true})
-        setTimeout( () => this.setState({inegleitIconVisible: false}) ) 
+        setTimeout( () => this.setState({inegleitIconVisible: false}), INEGLEIT_ICON_DURATION) 
       })
     }
-
   }
 
   async startGame() { 
@@ -98,25 +98,27 @@ class App extends Component {
     this.setState({loggedIn: true, player: player})
   }
 
-  async dealInitialCards(player_id) {
-    this.setState({initialCardsDealt: true})    
+  async dealInitialCards() {
+    this.setState({initialCardsDealt: true})
 
     var url = new URL(API_URL);
     url.pathname += "game/deal_cards" 
-    url.searchParams.append("player_id", player_id)
+    url.searchParams.append("player_id", this.state.player.id)
     url.searchParams.append("n_cards", 7)
 
     await fetch(url, {method:'POST'})
+    
+    this.updateCards()
   }
 
-  async updateCards (player_id) {
+  async updateCards () {
     var url = new URL(API_URL);
     url.pathname += "game/cards" 
-    url.searchParams.append("player_id", player_id)
+    url.searchParams.append("player_id", this.state.player.id)
 
     const response = await fetch(url, {method:'GET'})
-    response.json()
-      .then( d => { this.setState({cards: d}) } )
+    const responseJson = await response.json()
+    this.setState({cards: responseJson})
   }
 
   async updateTopCard () {
@@ -140,19 +142,21 @@ class App extends Component {
   async resetGame() {
     var url = new URL(API_URL);
     url.pathname += "game/reset_game" 
+    url.searchParams.append("player_id", this.state.player.id)
     const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { console.log(d) } ) 
-    
-    this.setState({
-      loggedIn:false, 
-      gameStarted:false,
-      initialCardsDealt: false,
-      players: [],
-      topCard: {id: 999, color:"grey", number:""},
-      activePlayerName: "",
-      cards: [],
-    })
+    const responseJson = await response.json()
+    if (responseJson.requestValid) {
+      console.log("game reset")
+      this.setState({
+        loggedIn:false, 
+        gameStarted:false,
+        initialCardsDealt: false,
+        players: [],
+        topCard: {id: 999, color:"grey", number:""},
+        activePlayerName: "",
+        cards: [],
+      })
+    }
   }
 
   colorSelected(color) {
@@ -216,7 +220,7 @@ class App extends Component {
               <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
             </NavItem>
                 } 
-                { this.DEBUG &&
+                { DEBUG &&
             <NavItem className="mr-auto">
               <Button variant="danger" onClick={ () => {
                 this.resetGame();
