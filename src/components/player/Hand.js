@@ -9,8 +9,8 @@ export class Hand extends Component {
     return (
       <div className="container hand">
         <PlayerContext.Consumer>
-          { (value) =>
-            value.props.cards.map(
+          { context =>
+            context.props.cards.map(
               card => 
                 <Card
                   key={card.id}
@@ -20,10 +20,10 @@ export class Hand extends Component {
                   onClick={ () => {
                     if (card.color === "black") {
                       console.log("can now choose color");
-                      value.playBlackCard(card.id);
+                      context.playBlackCard(card.id);
                     } else {
                       console.log("clicked on", card.color, card.number);
-                      value.playCard(card.id); 
+                      context.playCard(card.id); 
                     }
                   }
                   }
