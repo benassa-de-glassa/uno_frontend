@@ -31,7 +31,6 @@ export class ChatLog extends Component {
     }
   }
 
-
   render() {
     return (
       <div className="container m-0 p-0">
