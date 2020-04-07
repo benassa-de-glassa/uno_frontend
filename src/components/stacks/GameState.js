@@ -48,8 +48,8 @@ export class GameState extends Component {
 
   render() {
     var directionSymbol;
-    if (this.state.forward) { directionSymbol = "\u21BA" }
-    else { directionSymbol = "\u21BB"}
+    if (this.state.forward) { directionSymbol = "\u2193" }
+    else { directionSymbol = "\u2191"}
 
     return (
       <div>
