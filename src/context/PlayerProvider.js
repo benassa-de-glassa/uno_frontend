@@ -15,8 +15,6 @@ class PlayerProvider extends Component {
       cardPickedUp: false,
     }
     this.setPlayer = this.setPlayer.bind(this);
-    this.dealInitialCards = this.dealInitialCards.bind(this);
-    this.updateCards = this.updateCards.bind(this);
     this.playBlackCard = this.playBlackCard.bind(this);
     this.playCard = this.playCard.bind(this);
     this.pickupCard = this.pickupCard.bind(this);
@@ -30,15 +28,6 @@ class PlayerProvider extends Component {
     this.setState({player: player})
   }
 
-  async dealInitialCards () {
-    this.props.dealInitialCards(this.state.player.id)
-    this.updateCards()
-  }
-  
-  async updateCards() {
-    this.props.updateCards(this.state.player.id)
-  }
-
   async playBlackCard (card_id) {
     var url = new URL(API_URL);
     url.pathname += "game/play_black_card" 
@@ -46,19 +35,17 @@ class PlayerProvider extends Component {
     url.searchParams.append("card_id", card_id)
     
     const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { 
-        console.log(d) 
-        if (d[0]) { 
-          let d = new Date()
-          let n = d.getTime()
-          this.props.cardPlayedAt(n)
-          this.setState({canChooseColor: true, cardPickedUp: false})
-          this.updateCards()
-          // this.props.updateTopCard()
-          // this.props.updateActivePlayer()
-        }
-      })
+    const responseJson = await response.json()
+    
+    if (responseJson.requestValid) {
+      let d = new Date()
+      let n = d.getTime()
+      this.props.cardPlayedAt(n)
+      this.setState({canChooseColor: true, cardPickedUp: false})
+      this.props.updateCards()
+      // this.props.updateTopCard()
+      // this.props.updateActivePlayer()
+    }
   }
 
   async playCard (card_id) {
@@ -68,21 +55,19 @@ class PlayerProvider extends Component {
     url.searchParams.append("card_id", card_id)
     
     const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { 
-        console.log(d); 
-        if ( d[0] ) {
-          let d = new Date()
-          let n = d.getTime()
-          this.props.cardPlayedAt(n)
-          this.setState({cardPickedUp: false})
-          this.updateCards()
-          // this.props.updateTopCard()
-          // this.props.updateActivePlayer()
-        }
-      })
+    const responseJson = await response.json()
     
-    
+    if (responseJson.requestValid) {
+      let d = new Date()
+      let n = d.getTime()
+      this.props.cardPlayedAt(n)
+      this.setState({cardPickedUp: false})
+      this.props.updateCards()
+      // this.props.updateTopCard()
+      // this.props.updateActivePlayer()
+    } else {
+      console.log(responseJson)
+    }   
   }
 
   async pickupCard() {
@@ -94,14 +79,14 @@ class PlayerProvider extends Component {
     // d is an array of length 3
     // the first entry is if a card was picked up whereas the second indicates
     // if the card was picked up because of a penalty
-    response.json()
-      .then( d => { 
-        console.log(d);
-        if ( d[0] && !d[1] ) { this.setState({cardPickedUp: true}) } 
-      })
+    const responseJson = await response.json()
+    
+    if ( responseJson.requestValid && !responseJson.reasonIsPenalty ) { 
+      this.setState({cardPickedUp: true}) 
+    } 
     
     this.setState({saidUno: false})
-    this.updateCards()
+    this.props.updateCards()
     // this.props.updateTopCard()
     // this.props.updateActivePlayer()
   }
@@ -147,8 +132,8 @@ class PlayerProvider extends Component {
         value={{
           state: this.state,
           props: this.props,
-          dealInitialCards: this.dealInitialCards,
-          updateCards: this.updateCards,
+          dealInitialCards: this.props.dealInitialCards,
+          updateCards: this.props.updateCards,
           setPlayer: this.setPlayer,
           playCard: this.playCard,
           playBlackCard: this.playBlackCard,
