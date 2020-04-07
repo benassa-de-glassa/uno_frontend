@@ -24,6 +24,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      socketConnected: false,
       loggedIn: false,
       gameStarted: false,
       initialCardsDealt: false,
@@ -65,9 +66,11 @@ class App extends Component {
   
       socket.on('connect', () => {
         console.log('App.js >> socket.io connection successful')
+        this.setState({socketConnected: true})
       })
       socket.on('disconnect', () => {
         console.log('App.js >> connection to socket.io lost.');
+        this.setState({socketConnected: false})
       });
   
       socket.on('gamestate', (data) => {
@@ -219,10 +222,15 @@ class App extends Component {
                 <NavItem className="mr-3">
                   <h1>Inegleit <small>Online</small></h1>
                 </NavItem>
+                <NavItem className="m-1">
+                  <svg height="35" width="35">
+                    <circle cx="16" cy="16" r="7" stroke="black" strokeWidth="1" fill={this.state.socketConnected ? "green" : "red"} />
+                  </svg>
+                </NavItem>
                 { this.state.loggedIn && 
-            <NavItem className="mr-2 ml-2">
-              <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
-            </NavItem>
+                <NavItem className="mr-2 ml-2">
+                  <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
+                </NavItem>
                 } 
                 { DEBUG &&
             <NavItem className="mr-auto">
