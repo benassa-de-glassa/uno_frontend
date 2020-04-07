@@ -35,15 +35,15 @@ export class UserRegistration extends Component {
     this.setState({value: ""}) // clear input
     
     const response = await fetch(url, {method:'POST'})
-    const responseJSON = await response.json()
+    const responseJson = await response.json()
 
     // The response is either
-    // [true, player(JSON)] or [false, "reason" (str)]
-    if (response.requestValid) {
-      this.props.playerLoggedIn(response.player)
-      context.setPlayer(response.player)
+    // [true, player(Json)] or [false, "reason" (str)]
+    if (responseJson.requestValid) {
+      this.props.playerLoggedIn(responseJson.player)
+      context.setPlayer(responseJson.player)
     } else {
-      console.log(response.message)
+      console.log(responseJson.message)
     }
   }
 
