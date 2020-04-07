@@ -7,12 +7,12 @@ import PlayerContext from '../../context/PlayerContext';
 function Deal7Button() {
   return (
     <PlayerContext.Consumer>
-      { (value) => 
+      { context => 
         <div>
-          { !value.props.initialCardsDealt &&
+          { !context.props.initialCardsDealt &&
                 <Button 
                   className="deal" 
-                  onClick = { value.dealInitialCards }
+                  onClick = { context.dealInitialCards }
                 >
                     Give me cards
                 </Button>
