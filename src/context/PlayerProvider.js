@@ -45,6 +45,8 @@ class PlayerProvider extends Component {
       this.props.updateCards()
       // this.props.updateTopCard()
       // this.props.updateActivePlayer()
+    } else {
+      console.log(responseJson)
     }
   }
 

@@ -19,11 +19,9 @@ export class Hand extends Component {
                   number={card.number}
                   onClick={ () => {
                     if (card.color === "black") {
-                      console.log("can now choose color");
-                      context.playBlackCard(card.id);
+                      context.playBlackCard(card.id)
                     } else {
-                      console.log("clicked on", card.color, card.number);
-                      context.playCard(card.id); 
+                      context.playCard(card.id)
                     }
                   }
                   }

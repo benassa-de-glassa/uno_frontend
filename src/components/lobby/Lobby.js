@@ -26,10 +26,10 @@ export class Lobby extends Component {
       this.socket.connect();
 
       this.socket.on('connect', () => {
-        console.log('connection to socket.io successful')
+        console.log('Lobby.js >> socket.io connection successful')
       })
       this.socket.on('disconnect', () => {
-        console.log('connection to socket.io lost.');
+        console.log('Lobby.js >> connection to socket.io lost.');
       });
 
       this.socket.on('player-list', (data) => {
