@@ -171,6 +171,7 @@ class App extends Component {
   }
 
   cardPlayedAt(time) {
+    // store the time of the last played card to allow UNO calls within 3s
     this.setState({lastPlayed: time})
   }
 
@@ -181,17 +182,20 @@ class App extends Component {
     console.log("time since last played (s)", (n-this.state.lastPlayed)/1000)
 
     if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === player_id) ) {
+      // the last card was played within 3 seconds or the player is still active (e.g. choosing a color or something)
       var url = new URL(API_URL);
       url.pathname += "game/say_uno" 
       url.searchParams.append("player_id", player_id)
 
       const response = await fetch(url, {method:'POST'})
-      response.json()
-        .then( d => { 
-          console.log(d);
-          if (d[0]) { this.setState({saidUno: true})}
-        })
-    } else {
+      const responseJson = await response.json()
+      
+      if (responseJson.requestValid) { 
+        this.setState({saidUno: true})
+      } else { 
+        alert(responseJson.message)
+      }
+    } else { 
       alert("Oops, you didn't say uno in time!")
     }
   }
