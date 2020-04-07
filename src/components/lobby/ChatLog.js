@@ -13,7 +13,7 @@ export class ChatLog extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.onEnterKey = this.onEnterKey.bind(this)
-
+    this.scrollToBottom = this.scrollToBottom.bind(this)
   }
 
   handleChange(event) {
@@ -29,6 +29,18 @@ export class ChatLog extends Component {
     if (event.key === 'Enter' && event.shiftKey === false ) {
       this.handleSubmit()
     }
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  }
+  
+  componentDidMount() {
+    this.scrollToBottom()
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom()
   }
 
   render() {
@@ -52,6 +64,9 @@ export class ChatLog extends Component {
               )
             }
           })}
+          <div style={{float:"left", clear: "both"}} 
+               ref={(el) => { this.messagesEnd = el; }}>
+          </div>
         </div>
         <div className="mx-0 mt-1 pb-2">
           <textarea 
