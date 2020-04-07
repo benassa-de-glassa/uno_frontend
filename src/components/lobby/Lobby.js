@@ -16,6 +16,7 @@ export class Lobby extends Component {
     }
 
     this.sendMessage = this.sendMessage.bind(this)
+    this.addMessage = this.addMessage.bind(this)
 
     this.socket = socketIO(WS_URL, {
       transports: ['websocket'],
@@ -38,14 +39,25 @@ export class Lobby extends Component {
         }
       })
 
-      this.socket.on('player-message', data => {
-        this.setState( previousState => ( {messages: [...previousState.messages, data.message]} ) )
-      })
+      this.socket.on('message', data => this.addMessage(data.message))
+      // this.socket.on('message', data => {
+      //   console.log(data)
+      //   this.setState( previousState => ( {messages: [...previousState.messages, data.message]} ) )
+      // })
     }
   }
 
   componentDidMount() {
     this.startSocketIO()
+  }
+
+  addMessage(message) {
+    console.log(message)
+    console.log(this.state.messages)
+    let currentMessages = this.state.messages
+    currentMessages.push(message)
+    console.log(currentMessages)
+    this.setState(currentMessages)
   }
 
   async sendMessage(message) {
