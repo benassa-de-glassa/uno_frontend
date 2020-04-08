@@ -13,7 +13,7 @@ export class ChatLog extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.onEnterKey = this.onEnterKey.bind(this)
-
+    this.scrollToBottom = this.scrollToBottom.bind(this)
   }
 
   handleChange(event) {
@@ -31,6 +31,17 @@ export class ChatLog extends Component {
     }
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  }
+  
+  componentDidMount() {
+    this.scrollToBottom()
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom()
+  }
 
   render() {
     return (
@@ -41,18 +52,21 @@ export class ChatLog extends Component {
             if (this.state.showServerLog && (msg.sender === "server")) {
               return(
                 <div className="container servermessage my-0" key={msg.id}>
-                  <p className="m-1 p-0">{msg.time} {msg.text}</p>
+                  <p className="my-0 mb-1 p-0">{msg.text}</p>
                 </div>
               )
             } else {
               return (
                 <div className="container message my-0" key={msg.id}>
-                  <p className="m-1 p-0"><strong>{msg.sender}</strong> [{msg.time}]</p>
+                  <p className="my-0 mb-1 p-0"><strong>{msg.sender}</strong></p>
                   <p className="m-0 p-0">{msg.text}</p>
                 </div>
               )
             }
           })}
+          <div style={{float:"left", clear: "both"}} 
+               ref={(el) => { this.messagesEnd = el; }}>
+          </div>
         </div>
         <div className="mx-0 mt-1 pb-2">
           <textarea 

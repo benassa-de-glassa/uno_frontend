@@ -4,7 +4,7 @@ import PlayerContext from './PlayerContext'
 import { API_URL } from '../paths'
 
 class PlayerProvider extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       player: {
@@ -15,150 +15,142 @@ class PlayerProvider extends Component {
       cardPickedUp: false,
     }
     this.setPlayer = this.setPlayer.bind(this);
-    this.dealInitialCards = this.dealInitialCards.bind(this);
-    this.updateCards = this.updateCards.bind(this);
-    this.playBlackCard = this.playBlackCard.bind(this);
     this.playCard = this.playCard.bind(this);
+    this.playBlackCard = this.playBlackCard.bind(this);
     this.pickupCard = this.pickupCard.bind(this);
     this.cantPlay = this.cantPlay.bind(this);
     this.chooseColor = this.chooseColor.bind(this);
-    this.sayUno = this.sayUno.bind(this);
     this.clearPlayer = this.clearPlayer.bind(this);
   }
 
   setPlayer(player) {
-    this.setState({player: player})
+    this.setState({ player: player })
   }
 
-  async dealInitialCards () {
-    this.props.dealInitialCards(this.state.player.id)
-    this.updateCards()
-  }
-  
-  async updateCards() {
-    this.props.updateCards(this.state.player.id)
+  clearPlayer() {
+    this.setState({ player: { name: "", id: undefined } })
   }
 
-  async playBlackCard (card_id) {
+  async playCard(card_id) {
     var url = new URL(API_URL);
-    url.pathname += "game/play_black_card" 
+    url.pathname += "game/play_card"
     url.searchParams.append("player_id", this.state.player.id)
     url.searchParams.append("card_id", card_id)
-    
-    const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { 
-        console.log(d) 
-        if (d[0]) { 
-          let d = new Date()
-          let n = d.getTime()
-          this.props.cardPlayedAt(n)
-          this.setState({canChooseColor: true, cardPickedUp: false})
-          this.updateCards()
-          this.props.updateTopCard()
-          this.props.updateActivePlayer()
-        }
-      })
+
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
+
+    if (responseJson.requestValid) { 
+      // card has been played
+      
+      // store moment of last played card to only allow UNO calls within 
+      // 3 seconds of playing a card
+      let d = new Date()
+      let n = d.getTime()
+      this.props.cardPlayedAt(n)
+      this.setState({ cardPickedUp: false })
+      this.props.updateCards()
+    } else {
+      console.log(responseJson)
+    }
   }
 
-  async playCard (card_id) {
+  async playBlackCard(card_id) {
     var url = new URL(API_URL);
-    url.pathname += "game/play_card" 
+    url.pathname += "game/play_black_card"
     url.searchParams.append("player_id", this.state.player.id)
     url.searchParams.append("card_id", card_id)
-    
-    const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { 
-        console.log(d); 
-        if ( d[0] ) {
-          let d = new Date()
-          let n = d.getTime()
-          this.props.cardPlayedAt(n)
-          this.setState({cardPickedUp: false})
-          this.updateCards()
-          this.props.updateTopCard()
-          this.props.updateActivePlayer()
-        }
-      })
-    
-    
+
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
+
+    if (responseJson.requestValid) { 
+      // card has been played
+
+      // store moment of last played card to only allow UNO calls within 
+      // 3 seconds of playing a card
+      let d = new Date()
+      let n = d.getTime()
+      this.props.cardPlayedAt(n)
+      this.setState({ canChooseColor: true, cardPickedUp: false })
+      this.props.updateCards()
+    } else {
+      console.log(responseJson)
+    }
   }
 
   async pickupCard() {
     var url = new URL(API_URL);
-    url.pathname += "game/pickup_card" 
+    url.pathname += "game/pickup_card"
     url.searchParams.append("player_id", this.state.player.id)
-    const response = await fetch(url, {method:'POST'})
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
 
-    // d is an array of length 3
-    // the first entry is if a card was picked up whereas the second indicates
-    // if the card was picked up because of a penalty
-    response.json()
-      .then( d => { 
-        console.log(d);
-        if ( d[0] && !d[1] ) { this.setState({cardPickedUp: true}) } 
-      })
+    if (responseJson.requestValid) { 
+      // card has been picked up
+      if (!responseJson.reasonIsPenalty) { 
+        // if the card was not picked up because of a penalty the player is
+        // now allowed to click on can't play to end his turn
+        this.setState({ cardPickedUp: true }) 
+      }
+      this.setState({ saidUno: false})
+      this.props.updateCards()
+    } else {
+      console.log(responseJson)
+    }
     
-    this.setState({saidUno: false})
-    this.updateCards()
-    this.props.updateTopCard()
-    this.props.updateActivePlayer()
   }
 
   async cantPlay() {
     var url = new URL(API_URL);
-    url.pathname += "game/cant_play" 
+    url.pathname += "game/cant_play"
     url.searchParams.append("player_id", this.state.player.id)
-    
-    const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { console.log(d) } )
-    
-    this.setState({cardPickedUp: false})
-    this.props.updateActivePlayer()
+
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
+
+    if (responseJson.requestValid)  {
+      this.setState({ cardPickedUp: false }) 
+    } else {
+      console.log(responseJson)
+    }
   }
 
   async chooseColor(color) {
     var url = new URL(API_URL);
-    url.pathname += "game/choose_color" 
+    url.pathname += "game/choose_color"
     url.searchParams.append("player_id", this.state.player.id)
     url.searchParams.append("color", color)
-    
-    const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { console.log(d) } )
 
-    this.setState({canChooseColor: false})
-    this.props.colorSelected(color)
-  }
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
 
-  async sayUno() {
-    this.props.sayUno(this.state.player.id)
-  }
-
-  clearPlayer() {
-    this.setState({player:{name: "", id: undefined}})
+    if (responseJson.requestValid) {
+      // hides the color selection buttons
+      this.setState({ canChooseColor: false })
+    } else {
+      console.log(responseJson)
+    }
   }
 
   render() {
-    return(
-      <PlayerContext.Provider 
+    return (
+      <PlayerContext.Provider
         value={{
           state: this.state,
           props: this.props,
-          dealInitialCards: this.dealInitialCards,
-          updateCards: this.updateCards,
+          dealInitialCards: this.props.dealInitialCards,
+          updateCards: this.props.updateCards,
           setPlayer: this.setPlayer,
           playCard: this.playCard,
           playBlackCard: this.playBlackCard,
           chooseColor: this.chooseColor,
           pickupCard: this.pickupCard,
           cantPlay: this.cantPlay,
-          sayUno: this.sayUno,
+          sayUno: this.props.sayUno,
           clearPlayer: this.clearPlayer,
         }}
-      >     
+      >
         {this.props.children}
       </PlayerContext.Provider>
     )
