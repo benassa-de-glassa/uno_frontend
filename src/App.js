@@ -20,9 +20,6 @@ import { API_URL, WS_URL } from './paths'
 var DEBUG = true
 var INEGLEIT_ICON_DURATION = 3000 // ms
 
-var DEBUG = true;
-var INEGLEIT_SHOW_DURATION = 3000;
-
 class App extends Component {
   constructor() {
     super();
