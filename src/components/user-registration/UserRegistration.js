@@ -37,8 +37,6 @@ export class UserRegistration extends Component {
     const response = await fetch(url, {method:'POST'})
     const responseJson = await response.json()
 
-    // The response is either
-    // [true, player(Json)] or [false, "reason" (str)]
     if (responseJson.requestValid) {
       this.props.playerLoggedIn(responseJson.player)
       context.setPlayer(responseJson.player)
