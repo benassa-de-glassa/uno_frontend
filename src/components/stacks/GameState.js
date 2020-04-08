@@ -23,10 +23,10 @@ export class GameState extends Component {
       socket.connect();
 
       socket.on('connect', () => {
-        console.log('GameState.js >> socket.io connection successful')
+        console.log('connection to gamestate successful')
       })
       socket.on('disconnect', () => {
-        console.log('GameState.js >> connection to socket.io lost.');
+        console.log('connection to socket.io lost.');
       });
 
       socket.on('gamestate', (data) => {
@@ -48,8 +48,8 @@ export class GameState extends Component {
 
   render() {
     var directionSymbol;
-    if (this.state.forward) { directionSymbol = "\u2193" }
-    else { directionSymbol = "\u2191"}
+    if (this.state.forward) { directionSymbol = "\u21BA" }
+    else { directionSymbol = "\u21BB"}
 
     return (
       <div>
@@ -59,7 +59,7 @@ export class GameState extends Component {
           <h3>+{this.state.penalty}</h3>
         }
         { this.state.colorChosen &&
-           <svg height="35" width="35">
+           <svg height="100" width="100">
              <circle cx="16" cy="16" r="15" stroke="black" strokeWidth="2" fill={this.state.chosenColor} />
            </svg> 
         }

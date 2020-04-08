@@ -6,11 +6,11 @@ import PlayerContext from '../../context/PlayerContext';
 function UnoButton() {
   return (
     <PlayerContext.Consumer>
-      { context => 
+      { (value) => 
         <div style={{float:"left"}}>
-          { !context.state.saidUno &&
+          { !value.state.saidUno &&
                 <Button 
-                  onClick = { context.sayUno }
+                  onClick = { value.sayUno }
                 >
                     Uno
                 </Button>

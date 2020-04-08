@@ -24,7 +24,6 @@ export class UserRegistration extends Component {
   handleChange(event) {    
     this.setState({value: event.target.value});  
   }
-
   async handleSubmit(event, context) {
     event.preventDefault()
     
@@ -35,13 +34,17 @@ export class UserRegistration extends Component {
     this.setState({value: ""}) // clear input
     
     const response = await fetch(url, {method:'POST'})
-    const responseJson = await response.json()
+    const responseJSON = await response.json()
 
-    if (responseJson.requestValid) {
-      this.props.playerLoggedIn(responseJson.player)
-      context.setPlayer(responseJson.player)
+    console.log(responseJSON)
+
+    // The response is either
+    // [true, player(JSON)] or [false, "reason" (str)]
+    if (responseJSON[0]) {
+      this.props.playerLoggedIn(responseJSON[1])
+      context.setPlayer(responseJSON[1])
     } else {
-      console.log(responseJson.message)
+      console.log(responseJSON[1])
     }
   }
 

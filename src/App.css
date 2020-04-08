@@ -65,7 +65,7 @@ div.lobby {
 }
 
 div.chatbox {
-  max-height:400px;
+  max-height:600px;
   overflow-y: scroll;
   float: bottom
 }

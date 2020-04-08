@@ -23,10 +23,10 @@ export class Pile extends Component {
       socket.connect();
       
       socket.on('connect', () => {
-        console.log('Pile.js >> socket.io connection successful')
+        console.log('connected')
       })
       socket.on('disconnect', () => {
-        console.log('Pile.js >> connection to socket.io lost.');
+        console.log('connection to server lost.');
       });
       
       socket.on('top-card', (data) => {
