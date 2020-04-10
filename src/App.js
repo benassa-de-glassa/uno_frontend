@@ -339,7 +339,10 @@ class App extends Component {
             }
             {this.state.loggedIn &&
               <NavItem className="mr-auto ml-2">
-                <Controls gameStarted={this.state.gameStarted} loggedIn={this.state.loggedIn} startGame={this.startGame} />
+                <Controls 
+                  gameStarted={this.state.gameStarted}
+                  initialCardsDealt={this.state.initialCardsDealt}
+                  startGame={this.startGame} />
               </NavItem>
             }
             {(this.state.player.name !== "") &&

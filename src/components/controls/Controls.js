@@ -14,12 +14,13 @@ export class Controls extends Component {
     // if a game exists join the game
     return (
       <div>
-        {this.props.loggedIn && !this.props.gameStarted &&
+        {! this.props.gameStarted &&
           <Button onClick = { this.props.startGame }>
-            {this.props.loggedIn ? 
+            {this.props.initialCardsDealt ? 
               'Join Game' : 
               'Start Game'}
-          </Button>}
+          </Button>
+        }
       </div>
     )
   }
@@ -27,7 +28,7 @@ export class Controls extends Component {
 
 Controls.propTypes = {
   gameStarted: PropTypes.bool,
-  loggedIn: PropTypes.bool,
+  initialCardsDealt: PropTypes.bool,
   startGame: PropTypes.func
 }
 
