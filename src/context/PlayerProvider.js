@@ -118,13 +118,7 @@ class PlayerProvider extends Component {
       console.log(responseJson)
     }
   }
-  componentDidUpdate(previousProps) { 
-    if(this.props.player !== previousProps.player){
-      this.setPlayer(this.props.player)
-      this.props.updateCards()
-    }
 
-  }
   render() {
     return (
       <PlayerContext.Provider

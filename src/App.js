@@ -137,11 +137,10 @@ class App extends Component {
     }
   }
   
-  setCookieFromPlayer() {
+  setCookieFromPlayer(player) {
     let d = new Date();
     d.setTime(d.getTime() + (30*60*1000)); // cookie expires after 30 minutes
-
-    this.cookie.set('player', this.state.player, {
+    this.cookie.set('player', player, {
       path: '/',
       expires: d,
     })
@@ -161,6 +160,7 @@ class App extends Component {
 
   setPlayer(player) {
     this.setState({ loggedIn: true, player: player })
+    this.setCookieFromPlayer(player)
   }
 
   async dealInitialCards() {
@@ -311,7 +311,6 @@ class App extends Component {
         initialCardsDealt={this.state.initialCardsDealt}
         dealInitialCards={this.dealInitialCards}
         cards={this.state.cards}
-        player={this.state.player}
         colorSelected={this.colorSelected}
         sayUno={this.sayUno}
         cardPlayedAt={this.cardPlayedAt}
