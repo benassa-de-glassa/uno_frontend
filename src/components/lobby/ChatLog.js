@@ -51,7 +51,7 @@ export class ChatLog extends Component {
           { this.props.messages.map(msg => {
             if (this.state.showServerLog && (msg.sender === "server")) {
               return(
-                <div className="container servermessage my-0" key={msg.id}>
+                <div className="container servermessage my-0" key={msg.time}>
                   <p className="my-0 mb-1 p-0">{msg.text}</p>
                 </div>
               )

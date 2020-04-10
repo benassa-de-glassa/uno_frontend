@@ -46,6 +46,8 @@ export class GameState extends Component {
     this.startSocketIO()
   }
 
+  componentWillUnmount() {}
+
   render() {
     var directionSymbol;
     if (this.state.forward) { directionSymbol = "\u2193" }

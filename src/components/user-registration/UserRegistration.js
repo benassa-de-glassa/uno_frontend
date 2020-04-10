@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Button, FormGroup, Form, FormControl, FormLabel } from 'react-bootstrap'
 
-import PlayerContext from '../../context/PlayerContext';
-
 import {API_URL} from '../../paths'
 
 
@@ -14,18 +12,15 @@ export class UserRegistration extends Component {
       value: "",
     };
     
-    this.hideComponent= this.hideComponent.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  hideComponent() {}
 
   handleChange(event) {    
     this.setState({value: event.target.value});  
   }
 
-  async handleSubmit(event, context) {
+  async handleSubmit(event) {
     event.preventDefault()
     
     var url = new URL(API_URL)
@@ -38,8 +33,7 @@ export class UserRegistration extends Component {
     const responseJson = await response.json()
 
     if (responseJson.requestValid) {
-      this.props.playerLoggedIn(responseJson.player)
-      context.setPlayer(responseJson.player)
+      this.props.setPlayer(responseJson.player)
     } else {
       console.log(responseJson.message)
     }
@@ -47,26 +41,21 @@ export class UserRegistration extends Component {
 
   render() {
     return (
-
-      <PlayerContext.Consumer> 
-        { context =>
-          <div>
-            <Form onSubmit={ d => this.handleSubmit(d, context)}>
-              <FormGroup>
-                <FormLabel>Name:</FormLabel>
-                <FormControl 
-                  type="text" 
-                  placeholder="Enter your name"
-                  id="usr" 
-                  value={this.state.value} 
-                  onChange={this.handleChange} 
-                />
-              </FormGroup>
-              <Button type="submit">Submit</Button>
-            </Form>
-          </div>
-        }
-      </PlayerContext.Consumer> 
+      <div>
+        <Form onSubmit={ d => this.handleSubmit(d)}>
+          <FormGroup>
+            <FormLabel>Name:</FormLabel>
+            <FormControl 
+              type="text" 
+              placeholder="Enter your name"
+              id="usr" 
+              value={this.state.value} 
+              onChange={this.handleChange} 
+            />
+          </FormGroup>
+          <Button type="submit">Submit</Button>
+        </Form>
+      </div>
     );
   }
 }

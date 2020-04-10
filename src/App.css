@@ -88,6 +88,28 @@ div.sidebar-player-list {
   padding-left: 10px;
 }
 
+.player-element {
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+.waste {
+  /* width: 30px;
+  height: 30px;  */
+  text-align: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  vertical-align: middle;
+  float: right;
+  font-size: 25px;
+}
+
+.waste:hover {
+  background-color: lightcoral;
+  cursor: pointer;
+}
+
 div.inegleit {
   display: block;
   background-image: url("static/design2_by_lara.png");
