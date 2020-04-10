@@ -118,7 +118,7 @@ div.inegleit {
   width: 150px;
   height: 150px;  
   position: absolute;
-  top: 20%;
+  top: 150px;
   left: 40%;
   z-index: 99;
 }
