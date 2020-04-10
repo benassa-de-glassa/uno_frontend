@@ -10,11 +10,16 @@ export class Controls extends Component {
   }
 
   render() {
+    // if no game exists create a new game
+    // if a game exists join the game
     return (
       <div>
-        { !this.props.gameStarted &&
-        <Button onClick = { this.props.startGame }>Start Game</Button>
-        }
+        {this.props.loggedIn && !this.props.gameStarted &&
+          <Button onClick = { this.props.startGame }>
+            {this.props.loggedIn ? 
+              'Join Game' : 
+              'Start Game'}
+          </Button>}
       </div>
     )
   }
@@ -22,6 +27,7 @@ export class Controls extends Component {
 
 Controls.propTypes = {
   gameStarted: PropTypes.bool,
+  loggedIn: PropTypes.bool,
   startGame: PropTypes.func
 }
 
