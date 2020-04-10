@@ -35,13 +35,18 @@ div.hand {
   display: inline-flex;
   float: left;
   flex-wrap: wrap;
+  padding-left: 0;
+  padding-right: 0
 }
 
 div.player {
   background-color: darksalmon;
   overflow: auto;
   max-width: 800px;
-  border-radius: 5px
+  border-radius: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+
 }
 
 button.uno {
