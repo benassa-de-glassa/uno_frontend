@@ -15,6 +15,7 @@ class PlayerProvider extends Component {
       cardPickedUp: false,
     }
     this.setPlayer = this.setPlayer.bind(this);
+
     this.playCard = this.playCard.bind(this);
     this.playBlackCard = this.playBlackCard.bind(this);
     this.pickupCard = this.pickupCard.bind(this);
@@ -132,7 +133,13 @@ class PlayerProvider extends Component {
       console.log(responseJson)
     }
   }
+  componentDidUpdate(previousProps) { 
+    if(this.props.player !== previousProps.player){
+      this.setPlayer(this.props.player)
+      this.props.updateCards()
+    }
 
+  }
   render() {
     return (
       <PlayerContext.Provider
