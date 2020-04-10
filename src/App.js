@@ -15,18 +15,25 @@ import Lobby from './components/lobby/Lobby'
 import { Button, Navbar, NavItem } from 'react-bootstrap'
 
 
-import { API_URL, WS_URL} from './paths'
+import { API_URL, WS_URL } from './paths'
+
+var DEBUG = true
+var INEGLEIT_ICON_DURATION = 3000 // ms
+
+var DEBUG = true;
+var INEGLEIT_SHOW_DURATION = 3000;
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
+      socketConnected: false,
       loggedIn: false,
       gameStarted: false,
       initialCardsDealt: false,
       isActive: false,
       players: [],
-      topCard: {id: 999, color:"grey", number:""},
+      topCard: { id: 999, color: "grey", number: "" }, // placeholder
       activePlayerName: "",
       cards: [],
       player: {
@@ -38,7 +45,8 @@ class App extends Component {
       colorChosen: false,
       chosenColor: "",
       lastPlayed: 0,
-
+      notifications: [],
+      inegleitIconVisible: false,
     }
     this.startGame = this.startGame.bind(this);
     this.playerLoggedIn = this.playerLoggedIn.bind(this);
@@ -50,132 +58,172 @@ class App extends Component {
     this.colorSelected = this.colorSelected.bind(this);
     this.sayUno = this.sayUno.bind(this);
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
-
-    this.DEBUG = true
+    this.quitGame = this.quitGame.bind(this);
 
     const socket = socketIO(WS_URL, {
-      transports: ['websocket'], 
+      transports: ['websocket'],
       jsonp: false
     })
 
     this.startSocketIO = () => {
       socket.connect();
-  
+
       socket.on('connect', () => {
-        console.log('connection to gamestate successful')
+        console.log('App.js >> socket.io connection successful')
+        this.setState({ socketConnected: true })
       })
       socket.on('disconnect', () => {
-        console.log('connection to socket.io lost.');
+        console.log('App.js >> connection to socket.io lost.');
+        this.setState({ socketConnected: false })
       });
-  
+
       socket.on('gamestate', (data) => {
-        // console.log("gamestate:", data);
-        this.setState({isActive: data.activePlayerName === this.state.player.name})
+        this.setState({ isActive: data.activePlayerName === this.state.player.name })
+      });
+
+      socket.on('inegleit', (data) => {
+        let notification = ["BOOM! " + data.playerName + " has inegleit!"]
+        this.setState({ inegleitIconVisible: true })
+        this.setState({ notifications: notification })
+        setTimeout(() => {
+          this.setState({ inegleitIconVisible: false })
+          this.setState({ notifications: [] })
+        }, INEGLEIT_ICON_DURATION)
       })
     }
-
   }
 
-  async startGame() { 
-    this.setState({gameStarted: true})
+  async startGame() {
+    this.setState({ gameStarted: true })
     var url = new URL(API_URL);
-    url.pathname += "game/start_game" 
+    url.pathname += "game/start_game"
 
-    const response = await fetch(url, {method:'POST'})
-    response.json().then( () => {
+    const response = await fetch(url, { method: 'POST' })
+    response.json().then(() => {
       this.updateTopCard();
       this.updateActivePlayer();
-    }).catch( err => console.log(err) )
+    }).catch(err => console.log(err))
   }
 
-  playerLoggedIn() {
-    this.setState({loggedIn: true})
+  playerLoggedIn(player) {
+    this.setState({ loggedIn: true, player: player })
   }
 
-  async dealInitialCards(player_id) {
-    this.setState({initialCardsDealt: true})    
+  async dealInitialCards() {
+    this.setState({ initialCardsDealt: true })
 
     var url = new URL(API_URL);
-    url.pathname += "game/deal_cards" 
-    url.searchParams.append("player_id", player_id)
+    url.pathname += "game/deal_cards"
+    url.searchParams.append("player_id", this.state.player.id)
     url.searchParams.append("n_cards", 7)
 
-    await fetch(url, {method:'POST'})
+    await fetch(url, { method: 'POST' })
+
+    this.updateCards()
   }
 
-  async updateCards (player_id) {
+  async updateCards() {
     var url = new URL(API_URL);
-    url.pathname += "game/cards" 
-    url.searchParams.append("player_id", player_id)
+    url.pathname += "game/cards"
+    url.searchParams.append("player_id", this.state.player.id)
 
-    const response = await fetch(url, {method:'GET'})
-    response.json()
-      .then( d => { this.setState({cards: d}) } )
+    const response = await fetch(url, { method: 'GET' })
+    const responseJson = await response.json()
+    this.setState({ cards: responseJson })
   }
 
-  async updateTopCard () {
+  async updateTopCard() {
     var url = new URL(API_URL);
-    url.pathname += "game/top_card" 
+    url.pathname += "game/top_card"
 
-    const response = await fetch(url, {method:'GET'})
+    const response = await fetch(url, { method: 'GET' })
     response.json()
-      .then( d => { this.setState({topCard: d}) } )
-      .catch( err => { console.log(err) } )
+      .then(d => { this.setState({ topCard: d }) })
+      .catch(err => { console.log(err) })
   }
 
-  async updateActivePlayer () {
+  async updateActivePlayer() {
     var url = new URL(API_URL);
-    url.pathname += "game/active_player" 
-    const response = await fetch(url, {method:'GET'})
+    url.pathname += "game/active_player"
+    const response = await fetch(url, { method: 'GET' })
     response.json()
-      .then( d => { this.setState({activePlayerName: d.name}) })
+      .then(d => { this.setState({ activePlayerName: d.name }) })
   }
 
   async resetGame() {
     var url = new URL(API_URL);
-    url.pathname += "game/reset_game" 
-    const response = await fetch(url, {method:'POST'})
-    response.json()
-      .then( d => { console.log(d) } ) 
-    
-    this.setState({
-      loggedIn:false, 
-      gameStarted:false,
-      initialCardsDealt: false,
-      players: [],
-      topCard: {id: 999, color:"grey", number:""},
-      activePlayerName: "",
-      cards: [],
-    })
+    url.pathname += "game/reset_game"
+    url.searchParams.append("player_id", this.state.player.id)
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
+    if (responseJson.requestValid) {
+      console.log("game reset")
+      this.setState({
+        loggedIn: false,
+        gameStarted: false,
+        initialCardsDealt: false,
+        players: [],
+        topCard: { id: 999, color: "grey", number: "" },
+        activePlayerName: "",
+        cards: [],
+      })
+    }
   }
 
   colorSelected(color) {
-    this.setState({colorChosen: true, chosenColor: color})
+    this.setState({ colorChosen: true, chosenColor: color })
   }
 
   cardPlayedAt(time) {
-    this.setState({lastPlayed: time})
+    // store the time of the last played card to allow UNO calls within 3s
+    this.setState({ lastPlayed: time })
   }
 
-  async sayUno(player_id) {
+  async sayUno() {
     var d = new Date();
     var n = d.getTime();
 
-    console.log("time since last played (s)", (n-this.state.lastPlayed)/1000)
+    console.log("time since last played (s)", (n - this.state.lastPlayed) / 1000)
 
-    if ( (n - this.state.lastPlayed < 3000) || (this.state.activePlayerName === player_id) ) {
+    if ((n - this.state.lastPlayed < 3000) || 
+      (this.state.activePlayerName === this.state.player.id)) {
+      // the last card was played within 3 seconds or the player is still active (e.g. choosing a color or something)
       var url = new URL(API_URL);
-      url.pathname += "game/say_uno" 
-      url.searchParams.append("player_id", player_id)
+      url.pathname += "game/say_uno"
+      url.searchParams.append("player_id", this.state.player.id)
 
-      const response = await fetch(url, {method:'POST'})
-      response.json()
-        .then( d => { 
-          console.log(d);
-          if (d[0]) { this.setState({saidUno: true})}
-        })
+      const response = await fetch(url, { method: 'POST' })
+      const responseJson = await response.json()
+
+      if (responseJson.requestValid) {
+        this.setState({ saidUno: true })
+      } else {
+        alert(responseJson.message)
+      }
     } else {
       alert("Oops, you didn't say uno in time!")
+    }
+  }
+
+  async quitGame() {
+    var url = new URL(API_URL);
+    url.pathname += "game/remove_player"
+    url.searchParams.append("player_id", this.state.player.id)
+
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
+
+    if (responseJson.requestValid) {
+      this.setState(
+        { 
+          loggedIn: false, 
+          player: { name: "", id: undefined },
+          initialCardsDealt: false,
+          cards: []
+        }
+      )
+    } else {
+      console.log(responseJson)
     }
   }
 
@@ -183,11 +231,11 @@ class App extends Component {
     this.startSocketIO()
   }
 
-  render () {
+  render() {
     return (
-      <PlayerProvider 
+      <PlayerProvider
         updateCards={this.updateCards}
-        updateTopCard={this.updateTopCard} 
+        updateTopCard={this.updateTopCard}
         updateActivePlayer={this.updateActivePlayer}
         initialCardsDealt={this.state.initialCardsDealt}
         dealInitialCards={this.dealInitialCards}
@@ -197,77 +245,91 @@ class App extends Component {
         cardPlayedAt={this.cardPlayedAt}
       >
         <PlayerContext.Consumer>
-          { context => 
+          {context =>
             <div className="App">
+              {this.state.inegleitIconVisible &&
+                <div className="inegleit"></div>}
               <Navbar className="topbar">
                 <NavItem className="mr-3">
                   <h1>Inegleit <small>Online</small></h1>
                 </NavItem>
-                { this.state.loggedIn && 
-            <NavItem className="mr-2 ml-2">
-              <Controls gameStarted={this.state.gameStarted} startGame={this.startGame}/>
-            </NavItem>
-                } 
-                { this.DEBUG &&
-            <NavItem className="mr-auto">
-              <Button variant="danger" onClick={ () => {
-                this.resetGame();
-                context.clearPlayer(); }
-              }
-              >
-              Reset Game
-              </Button>
-            </NavItem>
+                <NavItem className="m-1">
+                  <svg height="35" width="35">
+                    <circle cx="16" cy="16" r="10" stroke="black" strokeWidth="1" fill={this.state.socketConnected ? "green" : "red"} />
+                  </svg>
+                </NavItem>
+                {this.state.loggedIn &&
+                  <NavItem className="mr-2 ml-2">
+                    <Controls gameStarted={this.state.gameStarted} startGame={this.startGame} />
+                  </NavItem>
                 }
-                { (context.state.player.name !== "") &&
-            <Fragment>
-              <NavItem className="mr-sm-2">
-                <p>Playing as</p>
-              </NavItem>
-              <NavItem className="mr-sm-2">
-                <p className="text-md-left font-weight-bold ml-2">
-                  {context.state.player.name} ( id: {context.state.player.id} )
-                </p>
-              
-              </NavItem>
-            </Fragment>
+                {DEBUG &&
+                  <NavItem className="mr-auto">
+                    <Button variant="danger" onClick={() => {
+                      this.resetGame();
+                      context.clearPlayer();
+                    }
+                    }
+                    >
+                      Reset Game
+              </Button>
+                  </NavItem>
+                }
+                {(context.state.player.name !== "") &&
+                  <Fragment>
+                    <NavItem className="mr-sm-2">
+                      <span className="text-md-left align-middle ml-2 mr-2">
+                        Playing as  <strong>{context.state.player.name} (#{context.state.player.id})</strong>
+                      </span>
+                    </NavItem>
+                    <NavItem className="mr-1">
+                      <Button variant="secondary" onClick={() => {
+                        this.quitGame();
+                        context.clearPlayer();
+                      }
+                      }
+                      >
+                        Quit
+              </Button>
+                    </NavItem>
+                  </Fragment>
                 }
               </Navbar>
               <div className="container">
                 <div className="row">
-                  <div className="col-8">
-                    { !this.state.loggedIn &&
-            <div>
-              <UserRegistration playerLoggedIn={this.playerLoggedIn}/>
-            </div>
+                  <div className="col-8 p-0">
+                    {!this.state.loggedIn &&
+                      <div>
+                        <UserRegistration playerLoggedIn={this.playerLoggedIn} />
+                      </div>
                     }
-                    { this.state.loggedIn && this.state.gameStarted &&
-            <div>
-              <Stacks 
-                topCard={this.state.topCard} 
-                updateTopCard={this.updateTopCard}
-                activePlayerName={this.state.activePlayerName}
-                currentPenalty={this.state.currentPenalty}
-                colorChosen={this.state.colorChosen}
-                chosenColor={this.state.chosenColor}
-                isActive={this.state.isActive}
-              />
-              <Player/>
-            </div>
+                    {this.state.loggedIn && this.state.gameStarted &&
+                      <div>
+                        <Stacks
+                          topCard={this.state.topCard}
+                          updateTopCard={this.updateTopCard}
+                          activePlayerName={this.state.activePlayerName}
+                          currentPenalty={this.state.currentPenalty}
+                          colorChosen={this.state.colorChosen}
+                          chosenColor={this.state.chosenColor}
+                          isActive={this.state.isActive}
+                          notifications={this.state.notifications}
+                        />
+                        <Player />
+                      </div>
                     }
                   </div>
                   <div className="col-4">
-                    <Lobby player={context.state.player.name}/>
+                    <Lobby player={context.state.player.name} />
                   </div>
                 </div>
               </div>
             </div>
           }
-        </PlayerContext.Consumer> 
+        </PlayerContext.Consumer>
       </PlayerProvider>
-      
     );
-  } 
+  }
 }
 
 export default App;
