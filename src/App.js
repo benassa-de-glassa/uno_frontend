@@ -2,8 +2,6 @@ import React, { Component, Fragment } from 'react';
 import './App.css';
 
 import PlayerProvider from './context/PlayerProvider'
-import PlayerContext from './context/PlayerContext'
-
 
 import UserRegistration from './components/user-registration/UserRegistration'
 import Controls from './components/controls/Controls'
@@ -46,7 +44,7 @@ class App extends Component {
       inegleitIconVisible: false,
     }
     this.startGame = this.startGame.bind(this);
-    this.playerLoggedIn = this.playerLoggedIn.bind(this);
+    this.setPlayer = this.setPlayer.bind(this);
     this.dealInitialCards = this.dealInitialCards.bind(this);
     this.updateCards = this.updateCards.bind(this);
     this.updateTopCard = this.updateTopCard.bind(this);
@@ -56,6 +54,7 @@ class App extends Component {
     this.sayUno = this.sayUno.bind(this);
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
     this.quitGame = this.quitGame.bind(this);
+    this.kickPlayer = this.kickPlayer.bind(this);
 
     const socket = socketIO(WS_URL, {
       transports: ['websocket'],
@@ -77,6 +76,21 @@ class App extends Component {
       socket.on('gamestate', (data) => {
         this.setState({ isActive: data.activePlayerName === this.state.player.name })
       });
+
+      socket.on('playerstate', (data) => {
+        // player_id = -1 means it applies to all players
+        if (data.player_id === this.state.player.id || data.player_id === -1) {
+          if (data.message === "kicked") { 
+            this.setState({ 
+                loggedIn: false, 
+                player: { name: "", id: undefined },
+                initialCardsDealt: false,
+                cards: []
+            })
+          }
+        }
+      });
+
 
       socket.on('inegleit', (data) => {
         let notification = ["BOOM! " + data.playerName + " has inegleit!"]
@@ -102,7 +116,7 @@ class App extends Component {
     }).catch(err => console.log(err))
   }
 
-  playerLoggedIn(player) {
+  setPlayer(player) {
     this.setState({ loggedIn: true, player: player })
   }
 
@@ -224,6 +238,21 @@ class App extends Component {
     }
   }
 
+  async kickPlayer(player_id) {
+    var url = new URL(API_URL);
+    url.pathname += "game/kick_player"
+    url.searchParams.append("player_id", player_id)
+    url.searchParams.append("from_id", this.state.player.id)
+
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
+
+    if (responseJson.requestValid) {
+    } else {
+      console.log(responseJson)
+    }
+  }
+
   componentDidMount() {
     this.startSocketIO()
   }
@@ -231,6 +260,7 @@ class App extends Component {
   render() {
     return (
       <PlayerProvider
+        player={this.state.player}
         updateCards={this.updateCards}
         updateTopCard={this.updateTopCard}
         updateActivePlayer={this.updateActivePlayer}
@@ -241,88 +271,88 @@ class App extends Component {
         sayUno={this.sayUno}
         cardPlayedAt={this.cardPlayedAt}
       >
-        <PlayerContext.Consumer>
-          {context =>
-            <div className="App">
-              {this.state.inegleitIconVisible &&
-                <div className="inegleit"></div>}
-              <Navbar className="topbar">
-                <NavItem className="mr-3">
-                  <h1>Inegleit <small>Online</small></h1>
+        <div className="App">
+          {this.state.inegleitIconVisible &&
+            <div className="inegleit"></div>}
+          <Navbar className="topbar">
+            <NavItem className="mr-3">
+              <h1>Inegleit <small>Online</small></h1>
+            </NavItem>
+            <NavItem className="m-1">
+              <svg height="35" width="35">
+                <circle cx="16" cy="16" r="10" stroke="black" strokeWidth="1" fill={this.state.socketConnected ? "green" : "red"} />
+              </svg>
+            </NavItem>
+            {this.state.player.king &&
+              <NavItem className="mr-2">
+                <Button variant="danger" onClick={() => {
+                  this.resetGame();
+                }}
+                >
+                  Reset Game
+                </Button>
+              </NavItem>
+            }
+            {this.state.loggedIn &&
+              <NavItem className="mr-auto ml-2">
+                <Controls gameStarted={this.state.gameStarted} startGame={this.startGame} />
+              </NavItem>
+            }
+            {(this.state.player.name !== "") &&
+              <Fragment>
+                <NavItem className="mr-sm-2">
+                  <span className="text-md-left align-middle ml-2 mr-2">
+                    Playing as  <strong>{this.state.player.name} (#{this.state.player.id})</strong>
+                  </span>
                 </NavItem>
-                <NavItem className="m-1">
-                  <svg height="35" width="35">
-                    <circle cx="16" cy="16" r="10" stroke="black" strokeWidth="1" fill={this.state.socketConnected ? "green" : "red"} />
-                  </svg>
+                <NavItem className="mr-1">
+                  <Button variant="secondary" onClick={() => {
+                    this.quitGame();
+                  }
+                  }
+                  >
+                    Quit
+          </Button>
                 </NavItem>
-                {this.state.player.king &&
-                  <NavItem className="mr-2">
-                    <Button variant="danger" onClick={() => {
-                      this.resetGame();
-                      context.clearPlayer();
-                    }}
-                    >
-                      Reset Game
-                    </Button>
-                  </NavItem>
-                }
-                {this.state.loggedIn &&
-                  <NavItem className="mr-auto ml-2">
-                    <Controls gameStarted={this.state.gameStarted} startGame={this.startGame} />
-                  </NavItem>
-                }
-                {(context.state.player.name !== "") &&
-                  <Fragment>
-                    <NavItem className="mr-sm-2">
-                      <span className="text-md-left align-middle ml-2 mr-2">
-                        Playing as  <strong>{context.state.player.name} (#{context.state.player.id})</strong>
-                      </span>
-                    </NavItem>
-                    <NavItem className="mr-1">
-                      <Button variant="secondary" onClick={() => {
-                        this.quitGame();
-                        context.clearPlayer();
-                      }
-                      }
-                      >
-                        Quit
-              </Button>
-                    </NavItem>
-                  </Fragment>
-                }
-              </Navbar>
-              <div className="container">
-                <div className="row">
-                  <div className="col-8 p-0">
-                    {!this.state.loggedIn &&
-                      <div>
-                        <UserRegistration playerLoggedIn={this.playerLoggedIn} />
-                      </div>
-                    }
-                    {this.state.loggedIn && this.state.gameStarted &&
-                      <div>
-                        <Stacks
-                          topCard={this.state.topCard}
-                          updateTopCard={this.updateTopCard}
-                          activePlayerName={this.state.activePlayerName}
-                          currentPenalty={this.state.currentPenalty}
-                          colorChosen={this.state.colorChosen}
-                          chosenColor={this.state.chosenColor}
-                          isActive={this.state.isActive}
-                          notifications={this.state.notifications}
-                        />
-                        <Player />
-                      </div>
-                    }
+              </Fragment>
+            }
+          </Navbar>
+          <div className="container">
+            <div className="row">
+              <div className="col-8 p-0">
+                {!this.state.loggedIn &&
+                  <div>
+                    <UserRegistration  
+                      setPlayer={this.setPlayer}
+                    />
                   </div>
-                  <div className="col-4">
-                    <Lobby player={context.state.player.name} />
+                }
+                {this.state.loggedIn && this.state.gameStarted &&
+                  <div>
+                    <Stacks
+                      topCard={this.state.topCard}
+                      updateTopCard={this.updateTopCard}
+                      activePlayerName={this.state.activePlayerName}
+                      currentPenalty={this.state.currentPenalty}
+                      colorChosen={this.state.colorChosen}
+                      chosenColor={this.state.chosenColor}
+                      isActive={this.state.isActive}
+                      notifications={this.state.notifications}
+                    />
+                    <Player />
                   </div>
-                </div>
+                }
+              </div>
+              <div className="col-4">
+                <Lobby 
+                  player={this.state.player.name} 
+                  king={this.state.player.king} 
+                  kickPlayer={this.kickPlayer}
+                />
               </div>
             </div>
-          }
-        </PlayerContext.Consumer>
+          </div>
+        </div>
       </PlayerProvider>
     );
   }
