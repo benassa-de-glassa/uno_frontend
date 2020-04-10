@@ -11,7 +11,7 @@ function Stacks(props) {
     <div className="row stacks" 
       style={(props.isActive) 
         ? {'backgroundColor': 'lightgoldenrodyellow', 'border': '2px solid yellow'}
-        : {'backgroundColor': 'white', 'border': "0px solid grey"}}>
+        : {'backgroundColor': 'white', 'border': "2px solid white"}}>
       <div className="col-md-auto">
         <Deck />
       </div>
