@@ -21,7 +21,7 @@ export class OtherPlayers extends Component {
         >
           <p className="player-element">
             <span><big>{player.king ? "\u265A" : "\u265F"}</big> {player.name} <strong>[{(player.saidUno) ? "UNO" : player.numberOfCards}]</strong></span>
-            {this.props.king ? <span className="waste" onClick={() => this.props.kickPlayer(player.id)}>{"\u{1F5D1}"}</span> : ""}
+            {(this.props.king && !player.king) ? <span className="waste" onClick={() => this.props.kickPlayer(player.id)}>{"\u{1F5D1}"}</span> : ""}
           </p>
         </div>
       )
