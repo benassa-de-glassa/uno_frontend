@@ -11,7 +11,7 @@ export class OtherPlayers extends Component {
       let cardsIndicator,
         backgroundColor;
       if (player.finished) {
-        cardsIndicator = ""
+        cardsIndicator = "done"
         backgroundColor = "lightskyblue"
       } else if (player.saidUno) {
         cardsIndicator = "[UNO]"
@@ -33,9 +33,9 @@ export class OtherPlayers extends Component {
         >
           <p className="player-element">
             <span>
-              <big>{player.king ? "\u265A" : "\u265F"}</big> 
+              <big>{player.king ? "\u265A " : "\u265F "}</big> 
               {player.name} 
-              <strong>{cardsIndicator}</strong>
+              <strong> {cardsIndicator}</strong>
             </span>
             {(this.props.king && !player.king) 
             ? <span className="waste" onClick={() => this.props.kickPlayer(player.id)}>{"\u{1F5D1}"}</span>
