@@ -10,7 +10,7 @@ export class Lobby extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      player: [],
+      players: [],
       turn: null,
       messages: []
     }
@@ -34,8 +34,8 @@ export class Lobby extends Component {
       });
 
       this.socket.on('player-list', (data) => {
-        if (this.state.player !== data.playerList || this.state.turn !== data.turn) {
-          this.setState({ player: data.playerList, turn: data.turn })
+        if (this.state.players !== data.playerList || this.state.turn !== data.turn) {
+          this.setState({ players: data.playerList, turn: data.turn })
         }
       })
 
@@ -66,7 +66,7 @@ export class Lobby extends Component {
   render() {
     return (
       <div className="container lobby">
-        <OtherPlayers playerList={this.state.player} turn={this.state.turn} king={this.props.king} kickPlayer={this.props.kickPlayer}/>
+        <OtherPlayers playerList={this.state.players} turn={this.state.turn} king={this.props.king} kickPlayer={this.props.kickPlayer}/>
         <ChatLog 
           messages={this.state.messages} 
           onSubmit={this.sendMessage} 
