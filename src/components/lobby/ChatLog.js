@@ -52,13 +52,13 @@ export class ChatLog extends Component {
             if (this.state.showServerLog && (msg.sender === "server")) {
               return(
                 <div className="container servermessage my-0" key={msg.time}>
-                  <p className="my-0 mb-1 p-0">{msg.text}</p>
+                  <div className="my-0 mb-1 p-0"><span className="mr-auto">{msg.text}</span><span className="message-time">[{msg.time}]</span></div>
                 </div>
               )
             } else {
               return (
                 <div className="container message my-0" key={msg.id}>
-                  <p className="my-0 mb-1 p-0"><strong>{msg.sender}</strong></p>
+                  <p className="my-0 mb-1 p-0"><span><strong>{msg.sender}</strong></span><span className="message-time">[{msg.time}]</span></p>
                   <p className="m-0 p-0">{msg.text}</p>
                 </div>
               )

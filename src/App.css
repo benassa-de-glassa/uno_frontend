@@ -94,8 +94,6 @@ div.sidebar-player-list {
 }
 
 .waste {
-  /* width: 30px;
-  height: 30px;  */
   text-align: center;
   width: 36px;
   height: 36px;
@@ -113,6 +111,7 @@ div.sidebar-player-list {
 div.inegleit {
   display: block;
   background-image: url("static/design2_by_lara.png");
+  pointer-events: none;
   background-size: 300px;
   background-repeat: no-repeat;
   width: 300px;
@@ -125,4 +124,8 @@ div.inegleit {
 
 .error-message {
   color: red;
+}
+
+.message-time {
+  float: right;
 }
