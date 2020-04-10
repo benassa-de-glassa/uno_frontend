@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import socketIO from "socket.io-client"
+import Cookies from 'universal-cookie';
 
 import './App.css';
 
@@ -20,7 +21,6 @@ import { API_URL, WS_URL } from './paths'
 var DEBUG = true
 var INEGLEIT_ICON_DURATION = 3000 // ms
 
-var DEBUG = true;
 var INEGLEIT_SHOW_DURATION = 3000;
 
 class App extends Component {
@@ -60,6 +60,10 @@ class App extends Component {
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
     this.quitGame = this.quitGame.bind(this);
 
+    this.cookie = new Cookies()
+    this.getPlayerFromCookie = this.getPlayerFromCookie.bind(this)
+    this.setPlayerFromCookie = this.setCookieFromPlayer.bind(this)
+
     const socket = socketIO(WS_URL, {
       transports: ['websocket'],
       jsonp: false
@@ -93,6 +97,43 @@ class App extends Component {
     }
   }
 
+  async getPlayerFromCookie() {
+    const player_cookie = this.cookie.get('player')
+    
+    // check whether player cookie exists
+    if (player_cookie !== undefined) {
+      // check with server whether player exists
+      var url = new URL(API_URL)
+      url.pathname += 'game/player_exists'
+      url.searchParams.append("player_name", player_cookie.name)
+      url.searchParams.append("player_id", player_cookie.id)
+      
+      const response = await fetch(url)
+      const responseJson = await response.json()
+      if (responseJson) {
+        this.setState({
+          player: player_cookie,
+          loggedIn: true,
+        })
+        if (responseJson.gotInitialCards) {
+          this.setState({initialCardsDealt: true})
+          this.updateCards()
+          this.updateTopCard()
+        }
+      }
+    }
+  }
+  
+  setCookieFromPlayer() {
+    let d = new Date();
+    d.setTime(d.getTime() + (30*60*1000)); // cookie expires after 30 minutes
+
+    this.cookie.set('player', this.state.player, {
+      path: '/',
+      expires: d,
+    })
+  }
+
   async startGame() {
     this.setState({ gameStarted: true })
     var url = new URL(API_URL);
@@ -107,6 +148,7 @@ class App extends Component {
 
   playerLoggedIn(player) {
     this.setState({ loggedIn: true, player: player })
+    this.setCookieFromPlayer()
   }
 
   async dealInitialCards() {
@@ -229,6 +271,7 @@ class App extends Component {
 
   componentDidMount() {
     this.startSocketIO()
+    this.getPlayerFromCookie()
   }
 
   render() {
@@ -240,12 +283,13 @@ class App extends Component {
         initialCardsDealt={this.state.initialCardsDealt}
         dealInitialCards={this.dealInitialCards}
         cards={this.state.cards}
+        player={this.state.player}
         colorSelected={this.colorSelected}
         sayUno={this.sayUno}
         cardPlayedAt={this.cardPlayedAt}
       >
         <PlayerContext.Consumer>
-          {context =>
+          {context => 
             <div className="App">
               {this.state.inegleitIconVisible &&
                 <div className="inegleit"></div>}
@@ -272,7 +316,7 @@ class App extends Component {
                     }
                     >
                       Reset Game
-              </Button>
+                    </Button>
                   </NavItem>
                 }
                 {(context.state.player.name !== "") &&
@@ -290,7 +334,7 @@ class App extends Component {
                       }
                       >
                         Quit
-              </Button>
+                      </Button>
                     </NavItem>
                   </Fragment>
                 }
