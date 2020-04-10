@@ -343,7 +343,7 @@ class App extends Component {
                   </div>
                 }
               </div>
-              <div className="col-4">
+              <div className="col-4 pr-0">
                 <Lobby 
                   player={this.state.player.name} 
                   king={this.state.player.king} 
