@@ -9,7 +9,8 @@ class PlayerProvider extends Component {
     this.state = {
       player: {
         id: undefined,
-        name: ''
+        name: '',
+        king: false,
       },
       canChooseColor: false,
       cardPickedUp: false,

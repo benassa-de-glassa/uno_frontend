@@ -38,8 +38,9 @@ export class UserRegistration extends Component {
     const responseJson = await response.json()
 
     if (responseJson.requestValid) {
-      this.props.playerLoggedIn(responseJson.player)
-      context.setPlayer(responseJson.player)
+      // both App.js and PlayerProvider.js have to know player id etc.
+      this.props.playerLoggedIn(responseJson.player) // for App.js
+      context.setPlayer(responseJson.player)         // for PlayerProvider.js
     } else {
       console.log(responseJson.message)
     }

@@ -17,7 +17,6 @@ import socketIO from "socket.io-client"
 
 import { API_URL, WS_URL } from './paths'
 
-var DEBUG = true
 var INEGLEIT_ICON_DURATION = 3000 // ms
 
 class App extends Component {
@@ -36,6 +35,7 @@ class App extends Component {
       player: {
         name: "",
         id: undefined,
+        king: false,
       },
       saidUno: false,
       currentPenalty: 0,
@@ -255,21 +255,20 @@ class App extends Component {
                     <circle cx="16" cy="16" r="10" stroke="black" strokeWidth="1" fill={this.state.socketConnected ? "green" : "red"} />
                   </svg>
                 </NavItem>
-                {this.state.loggedIn &&
-                  <NavItem className="mr-2 ml-2">
-                    <Controls gameStarted={this.state.gameStarted} startGame={this.startGame} />
-                  </NavItem>
-                }
-                {DEBUG &&
-                  <NavItem className="mr-auto">
+                {this.state.player.king &&
+                  <NavItem className="mr-2">
                     <Button variant="danger" onClick={() => {
                       this.resetGame();
                       context.clearPlayer();
-                    }
-                    }
+                    }}
                     >
                       Reset Game
-              </Button>
+                    </Button>
+                  </NavItem>
+                }
+                {this.state.loggedIn &&
+                  <NavItem className="mr-auto ml-2">
+                    <Controls gameStarted={this.state.gameStarted} startGame={this.startGame} />
                   </NavItem>
                 }
                 {(context.state.player.name !== "") &&
