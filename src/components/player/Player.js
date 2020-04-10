@@ -18,7 +18,7 @@ export class Player extends Component {
   render() {
     return (
       <div className="container player">
-        <Navbar>
+        <Navbar className="px-2">
           <NavItem className="mr-2">
             <DealCardsButton />
           </NavItem>

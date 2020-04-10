@@ -13,14 +13,14 @@ function Stacks(props) {
         ? {'backgroundColor': 'lightgoldenrodyellow', 'border': '2px solid yellow'}
         : {'backgroundColor': 'white', 'border': "2px solid white"}}>
       <div className="col-md-auto">
+        <GameState isActive={props.isActive}/>
+      </div>
+      <div className="col-md-auto">
         <Deck />
       </div>
       <div className="col-md-auto">
         <Pile topCard={props.topCard}/>
       </div> 
-      <div className="col-md-auto">
-        <GameState isActive={props.isActive}/>
-      </div>
       <div className="col-md-auto">
         <Notifications notifications={props.notifications}/>
       </div>
