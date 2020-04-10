@@ -20,16 +20,16 @@ export class Player extends Component {
       <div className="container player">
         <Navbar>
           <NavItem className="mr-2">
-          <DealCardsButton />
+            <DealCardsButton />
           </NavItem>
           <NavItem>
-          <CantPlayButton />
+            <CantPlayButton />
           </NavItem>
           <NavItem className="mr-auto">
-          <ChooseColor />
+            <ChooseColor />
           </NavItem>
           <NavItem>
-          <UnoButton />
+            <UnoButton />
           </NavItem>
         </Navbar>
         <Hand />

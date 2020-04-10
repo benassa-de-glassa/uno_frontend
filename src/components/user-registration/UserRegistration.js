@@ -10,9 +10,9 @@ export class UserRegistration extends Component {
   constructor(props) {
     super(props);
 
-    this.props = props;
     this.state = { 
-      value: "",};
+      value: "",
+    };
     
     this.hideComponent= this.hideComponent.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -48,27 +48,27 @@ export class UserRegistration extends Component {
   render() {
     return (
 
-<PlayerContext.Consumer> 
-{ context =>
-<div>
-  <Form onSubmit={ d => this.handleSubmit(d, context)}>
-    <FormGroup>
-      <FormLabel>Name:</FormLabel>
-        <FormControl 
-          type="text" 
-          placeholder="Enter your name"
-          id="usr" 
-          value={this.state.value} 
-          onChange={this.handleChange} 
-        />
-    </FormGroup>
-    <Button type="submit">Submit</Button>
-  </Form>
-</div>
-}
-</PlayerContext.Consumer> 
-);
-}
+      <PlayerContext.Consumer> 
+        { context =>
+          <div>
+            <Form onSubmit={ d => this.handleSubmit(d, context)}>
+              <FormGroup>
+                <FormLabel>Name:</FormLabel>
+                <FormControl 
+                  type="text" 
+                  placeholder="Enter your name"
+                  id="usr" 
+                  value={this.state.value} 
+                  onChange={this.handleChange} 
+                />
+              </FormGroup>
+              <Button type="submit">Submit</Button>
+            </Form>
+          </div>
+        }
+      </PlayerContext.Consumer> 
+    );
+  }
 }
 
 export default UserRegistration
