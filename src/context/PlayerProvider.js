@@ -7,35 +7,20 @@ class PlayerProvider extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      player: {
-        id: undefined,
-        name: '',
-        king: false,
-      },
       canChooseColor: false,
       cardPickedUp: false,
     }
-    this.setPlayer = this.setPlayer.bind(this);
     this.playCard = this.playCard.bind(this);
     this.playBlackCard = this.playBlackCard.bind(this);
     this.pickupCard = this.pickupCard.bind(this);
     this.cantPlay = this.cantPlay.bind(this);
     this.chooseColor = this.chooseColor.bind(this);
-    this.clearPlayer = this.clearPlayer.bind(this);
-  }
-
-  setPlayer(player) {
-    this.setState({ player: player })
-  }
-
-  clearPlayer() {
-    this.setState({ player: { name: "", id: undefined } })
   }
 
   async playCard(card_id) {
     var url = new URL(API_URL);
     url.pathname += "game/play_card"
-    url.searchParams.append("player_id", this.state.player.id)
+    url.searchParams.append("player_id", this.props.player.id)
     url.searchParams.append("card_id", card_id)
 
     const response = await fetch(url, { method: 'POST' })
@@ -59,7 +44,7 @@ class PlayerProvider extends Component {
   async playBlackCard(card_id) {
     var url = new URL(API_URL);
     url.pathname += "game/play_black_card"
-    url.searchParams.append("player_id", this.state.player.id)
+    url.searchParams.append("player_id", this.props.player.id)
     url.searchParams.append("card_id", card_id)
 
     const response = await fetch(url, { method: 'POST' })
@@ -83,7 +68,7 @@ class PlayerProvider extends Component {
   async pickupCard() {
     var url = new URL(API_URL);
     url.pathname += "game/pickup_card"
-    url.searchParams.append("player_id", this.state.player.id)
+    url.searchParams.append("player_id", this.props.player.id)
     const response = await fetch(url, { method: 'POST' })
     const responseJson = await response.json()
 
@@ -105,7 +90,7 @@ class PlayerProvider extends Component {
   async cantPlay() {
     var url = new URL(API_URL);
     url.pathname += "game/cant_play"
-    url.searchParams.append("player_id", this.state.player.id)
+    url.searchParams.append("player_id", this.props.player.id)
 
     const response = await fetch(url, { method: 'POST' })
     const responseJson = await response.json()
@@ -120,7 +105,7 @@ class PlayerProvider extends Component {
   async chooseColor(color) {
     var url = new URL(API_URL);
     url.pathname += "game/choose_color"
-    url.searchParams.append("player_id", this.state.player.id)
+    url.searchParams.append("player_id", this.props.player.id)
     url.searchParams.append("color", color)
 
     const response = await fetch(url, { method: 'POST' })
@@ -138,18 +123,17 @@ class PlayerProvider extends Component {
     return (
       <PlayerContext.Provider
         value={{
+          player: this.props.player,
           state: this.state,
           props: this.props,
           dealInitialCards: this.props.dealInitialCards,
           updateCards: this.props.updateCards,
-          setPlayer: this.setPlayer,
           playCard: this.playCard,
           playBlackCard: this.playBlackCard,
           chooseColor: this.chooseColor,
           pickupCard: this.pickupCard,
           cantPlay: this.cantPlay,
           sayUno: this.props.sayUno,
-          clearPlayer: this.clearPlayer,
         }}
       >
         {this.props.children}
