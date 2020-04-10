@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Button, FormGroup, Form, FormControl, FormLabel } from 'react-bootstrap'
 
-import PlayerContext from '../../context/PlayerContext';
-
 import {API_URL} from '../../paths'
 
 
@@ -14,18 +12,15 @@ export class UserRegistration extends Component {
     this.state = { 
       value: "",};
     
-    this.hideComponent= this.hideComponent.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  hideComponent() {}
 
   handleChange(event) {    
     this.setState({value: event.target.value});  
   }
 
-  async handleSubmit(event, context) {
+  async handleSubmit(event) {
     event.preventDefault()
     
     var url = new URL(API_URL)
@@ -38,9 +33,7 @@ export class UserRegistration extends Component {
     const responseJson = await response.json()
 
     if (responseJson.requestValid) {
-      // both App.js and PlayerProvider.js have to know player id etc.
-      this.props.playerLoggedIn(responseJson.player) // for App.js
-      context.setPlayer(responseJson.player)         // for PlayerProvider.js
+      this.props.setPlayer(responseJson.player)
     } else {
       console.log(responseJson.message)
     }
@@ -48,11 +41,8 @@ export class UserRegistration extends Component {
 
   render() {
     return (
-
-<PlayerContext.Consumer> 
-{ context =>
 <div>
-  <Form onSubmit={ d => this.handleSubmit(d, context)}>
+  <Form onSubmit={ d => this.handleSubmit(d)}>
     <FormGroup>
       <FormLabel>Name:</FormLabel>
         <FormControl 
@@ -66,8 +56,6 @@ export class UserRegistration extends Component {
     <Button type="submit">Submit</Button>
   </Form>
 </div>
-}
-</PlayerContext.Consumer> 
 );
 }
 }
