@@ -10,7 +10,9 @@ export class UserRegistration extends Component {
 
     this.props = props;
     this.state = { 
-      value: "",};
+      value: "",
+      error: "",
+    };
     
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,13 +37,16 @@ export class UserRegistration extends Component {
     if (responseJson.requestValid) {
       this.props.setPlayer(responseJson.player)
     } else {
-      console.log(responseJson.message)
+      console.log(responseJson)
+      this.setState({ error: responseJson.message })
     }
   }
 
   render() {
     return (
 <div>
+  {this.state.error &&
+  <p className="error-message">{this.state.error}</p>}
   <Form onSubmit={ d => this.handleSubmit(d)}>
     <FormGroup>
       <FormLabel>Name:</FormLabel>

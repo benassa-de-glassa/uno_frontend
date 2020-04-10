@@ -122,3 +122,7 @@ div.inegleit {
   left: 40%;
   z-index: 99;
 }
+
+.error-message {
+  color: red;
+}
