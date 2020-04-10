@@ -84,7 +84,6 @@ class PlayerProvider extends Component {
     } else {
       console.log(responseJson)
     }
-    
   }
 
   async cantPlay() {
@@ -115,6 +114,7 @@ class PlayerProvider extends Component {
       // hides the color selection buttons
       this.setState({ canChooseColor: false })
     } else {
+      this.setState({ canChooseColor: false })
       console.log(responseJson)
     }
   }
