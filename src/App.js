@@ -319,6 +319,13 @@ class App extends Component {
           </Navbar>
           <div className="container">
             <div className="row">
+            <div className="col-4 pl-0">
+                <Lobby 
+                  player={this.state.player.name} 
+                  king={this.state.player.king} 
+                  kickPlayer={this.kickPlayer}
+                />
+              </div>
               <div className="col-8 p-0">
                 {!this.state.loggedIn &&
                   <div>
@@ -342,13 +349,6 @@ class App extends Component {
                     <Player />
                   </div>
                 }
-              </div>
-              <div className="col-4 pr-0">
-                <Lobby 
-                  player={this.state.player.name} 
-                  king={this.state.player.king} 
-                  kickPlayer={this.kickPlayer}
-                />
               </div>
             </div>
           </div>
