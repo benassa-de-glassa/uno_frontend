@@ -5,7 +5,7 @@ export class OtherPlayers extends Component {
   //constructor(props){
   //  super(props)
   //}
-
+  
   componentDidUpdate(){
   }
 
@@ -19,7 +19,10 @@ export class OtherPlayers extends Component {
             ? {'backgroundColor': 'lightgreen', 'border': '1px solid green'}
             : {}}
         >
-          <p><big>{player.king ? "\u265A" : "\u265F"}</big> {player.name} <strong>[{(player.saidUno) ? "UNO" : player.numberOfCards}]</strong></p>
+          <p className="player-element">
+            <span><big>{player.king ? "\u265A" : "\u265F"}</big> {player.name} <strong>[{(player.saidUno) ? "UNO" : player.numberOfCards}]</strong></span>
+            {this.props.king ? <span className="waste" onClick={() => this.props.kickPlayer(player.id)}>{"\u{1F5D1}"}</span> : ""}
+          </p>
         </div>
       )
     })
