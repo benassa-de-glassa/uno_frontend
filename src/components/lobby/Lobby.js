@@ -48,11 +48,8 @@ export class Lobby extends Component {
   }
 
   addMessage(message) {
-    console.log(message)
-    console.log(this.state.messages)
     let currentMessages = this.state.messages
     currentMessages.push(message)
-    console.log(currentMessages)
     this.setState(currentMessages)
   }
 
@@ -64,13 +61,12 @@ export class Lobby extends Component {
     url.searchParams.append("client_message", message)
 
     await fetch(url, {method:'POST'})
-
   }
 
   render() {
     return (
       <div className="container lobby">
-        <OtherPlayers playerList={this.state.player} turn={this.state.turn} />
+        <OtherPlayers playerList={this.state.player} turn={this.state.turn} king={this.props.king} kickPlayer={this.props.kickPlayer}/>
         <ChatLog 
           messages={this.state.messages} 
           onSubmit={this.sendMessage} 
