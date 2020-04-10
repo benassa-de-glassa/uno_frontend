@@ -82,7 +82,7 @@ class App extends Component {
         if (data.player_id === this.state.player.id || data.player_id === -1) {
           if (data.message === "kicked") { 
             this.setState({ 
-                loggedIn: false, 
+                loggedIn: false,
                 player: { name: "", id: undefined },
                 initialCardsDealt: false,
                 cards: []
