@@ -35,13 +35,18 @@ div.hand {
   display: inline-flex;
   float: left;
   flex-wrap: wrap;
+  padding-left: 0;
+  padding-right: 0
 }
 
 div.player {
   background-color: darksalmon;
   overflow: auto;
   max-width: 800px;
-  border-radius: 5px
+  border-radius: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+
 }
 
 button.uno {
@@ -65,22 +70,35 @@ div.lobby {
 }
 
 div.chatbox {
+  min-width: 300px;
   max-height:400px;
   overflow-y: scroll;
-  float: bottom
 }
 
 div.servermessage {
+  display: block;
   background-color: rgb(250, 243, 210);
   border-radius: 5px;
   border: 1px solid lightblue;
 }
 
 div.message {
+  display: block;
   background-color: rgb(255, 218, 204);
   border-radius: 5px;
   border: 1px solid darksalmon;
+}
 
+.server-message-text {
+  display: block;
+  width: 300px; 
+  word-wrap: break-word;
+}
+
+.message-text {
+  display: block;
+  width: 300px;
+  word-wrap: break-word;
 }
 
 div.sidebar-player-list {
@@ -94,8 +112,6 @@ div.sidebar-player-list {
 }
 
 .waste {
-  /* width: 30px;
-  height: 30px;  */
   text-align: center;
   width: 36px;
   height: 36px;
@@ -113,6 +129,7 @@ div.sidebar-player-list {
 div.inegleit {
   display: block;
   background-image: url("static/design2_by_lara.png");
+  pointer-events: none;
   background-size: 300px;
   background-repeat: no-repeat;
   width: 300px;
@@ -121,4 +138,12 @@ div.inegleit {
   top: 120px;
   left: 40%;
   z-index: 99;
+}
+
+.error-message {
+  color: red;
+}
+
+.message-time {
+  float: right;
 }

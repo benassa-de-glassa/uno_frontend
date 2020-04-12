@@ -55,8 +55,7 @@ export class GameState extends Component {
 
     return (
       <div>
-        <p className="mb-1"><strong>{this.state.activePlayerName}</strong>'s turn</p>
-        <h3>{directionSymbol}</h3>
+        <h1>{directionSymbol}</h1>
         { this.state.penalty !== 0 && 
           <h3>+{this.state.penalty}</h3>
         }

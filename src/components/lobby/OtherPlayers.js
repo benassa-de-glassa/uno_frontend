@@ -11,10 +11,10 @@ export class OtherPlayers extends Component {
       let cardsIndicator,
         backgroundColor;
       if (player.finished) {
-        cardsIndicator = "done"
+        cardsIndicator = "(" + player.rank + ".)"
         backgroundColor = "lightskyblue"
       } else if (player.saidUno) {
-        cardsIndicator = "[UNO]"
+        cardsIndicator = "[uno]"
         backgroundColor = "lightsalmon"
       } else {
         cardsIndicator = "[" + player.numberOfCards + "]"
