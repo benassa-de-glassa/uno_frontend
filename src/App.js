@@ -55,6 +55,7 @@ class App extends Component {
     this.cardPlayedAt = this.cardPlayedAt.bind(this);
     this.quitGame = this.quitGame.bind(this);
     this.kickPlayer = this.kickPlayer.bind(this);
+    this.insultPlayer = this.insultPlayer.bind(this);
 
     const socket = socketIO(WS_URL, {
       transports: ['websocket'],
@@ -80,27 +81,25 @@ class App extends Component {
       socket.on('playerstate', (data) => {
         // player_id = -1 means it applies to all players
         if (data.player_id === this.state.player.id || data.player_id === -1) {
-          if (data.message === "kicked") { 
-            this.setState({ 
-                loggedIn: false,
-                player: { name: "", id: undefined },
-                initialCardsDealt: false,
-                cards: []
+          if (data.message === "kicked") {
+            this.setState({
+              loggedIn: false,
+              player: { name: "", id: undefined },
+              initialCardsDealt: false,
+              cards: []
             })
           }
         }
       });
 
-
-      socket.on('inegleit', (data) => {
-        let notification = ["BOOM! " + data.playerName + " has inegleit!"]
-        this.setState({ inegleitIconVisible: true })
+      socket.on('notification', (data) => {
+        let notification = [data.notification]
         this.setState({ notifications: notification })
-        setTimeout(() => {
-          this.setState({ inegleitIconVisible: false })
-          this.setState({ notifications: [] })
-        }, INEGLEIT_ICON_DURATION)
-      })
+        if (data.type === "inegleit") {
+          this.setState({ inegleitIconVisible: true })
+          setTimeout(() => this.setState({ inegleitIconVisible: false }), INEGLEIT_ICON_DURATION)
+        }
+      });
     }
   }
 
@@ -196,7 +195,7 @@ class App extends Component {
 
     console.log("time since last played (s)", (n - this.state.lastPlayed) / 1000)
 
-    if ((n - this.state.lastPlayed < 3000) || 
+    if ((n - this.state.lastPlayed < 3000) ||
       (this.state.activePlayerName === this.state.player.id)) {
       // the last card was played within 3 seconds or the player is still active (e.g. choosing a color or something)
       var url = new URL(API_URL);
@@ -226,8 +225,8 @@ class App extends Component {
 
     if (responseJson.requestValid) {
       this.setState(
-        { 
-          loggedIn: false, 
+        {
+          loggedIn: false,
           player: { name: "", id: undefined },
           initialCardsDealt: false,
           cards: []
@@ -243,6 +242,21 @@ class App extends Component {
     url.pathname += "game/kick_player"
     url.searchParams.append("player_id", player_id)
     url.searchParams.append("from_id", this.state.player.id)
+
+    const response = await fetch(url, { method: 'POST' })
+    const responseJson = await response.json()
+
+    if (responseJson.requestValid) {
+    } else {
+      console.log(responseJson)
+    }
+  }
+
+  async insultPlayer(receiver_id) {
+    var url = new URL(API_URL);
+    url.pathname += "game/insult_player"
+    url.searchParams.append("sender_id", this.state.player.id)
+    url.searchParams.append("receiver_id", receiver_id)
 
     const response = await fetch(url, { method: 'POST' })
     const responseJson = await response.json()
@@ -319,17 +333,18 @@ class App extends Component {
           </Navbar>
           <div className="container">
             <div className="row">
-            <div className="col-4 pl-0">
-                <Lobby 
-                  player={this.state.player.name} 
-                  king={this.state.player.king} 
+              <div className="col-4 pl-0">
+                <Lobby
+                  player={this.state.player}
+                  loggedIn={this.state.loggedIn}
+                  insultPlayer={this.insultPlayer}
                   kickPlayer={this.kickPlayer}
                 />
               </div>
               <div className="col-8 p-0">
                 {!this.state.loggedIn &&
                   <div>
-                    <UserRegistration  
+                    <UserRegistration
                       setPlayer={this.setPlayer}
                     />
                   </div>

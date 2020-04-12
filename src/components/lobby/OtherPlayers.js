@@ -37,7 +37,9 @@ export class OtherPlayers extends Component {
               {player.name} 
               <strong> {cardsIndicator}</strong>
             </span>
-            {(this.props.king && !player.king) 
+            { this.props.loggedIn && this.props.player.id !== player.id &&
+            <span className="dynamite" onClick={() => this.props.insultPlayer(player.id)}>{"\u{1F9E8}"}</span> }
+            {(this.props.player.king && !player.king) 
             ? <span className="waste" onClick={() => this.props.kickPlayer(player.id)}>{"\u{1F5D1}"}</span>
             : ""}
           </p>
