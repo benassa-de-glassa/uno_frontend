@@ -45,7 +45,7 @@ export class UserRegistration extends Component {
     return (
       <div>
         {this.state.error &&
-          <p className="error-message">{this.state.error}</p>}
+        <p className="error-message">{this.state.error}</p>}
         <Form onSubmit={ d => this.handleSubmit(d)}>
           <FormGroup>
             <FormLabel>Name:</FormLabel>

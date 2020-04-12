@@ -70,22 +70,35 @@ div.lobby {
 }
 
 div.chatbox {
+  min-width: 300px;
   max-height:400px;
   overflow-y: scroll;
-  float: bottom
 }
 
 div.servermessage {
+  display: block;
   background-color: rgb(250, 243, 210);
   border-radius: 5px;
   border: 1px solid lightblue;
 }
 
 div.message {
+  display: block;
   background-color: rgb(255, 218, 204);
   border-radius: 5px;
   border: 1px solid darksalmon;
+}
 
+.server-message-text {
+  display: block;
+  width: 300px; 
+  word-wrap: break-word;
+}
+
+.message-text {
+  display: block;
+  width: 300px;
+  word-wrap: break-word;
 }
 
 div.sidebar-player-list {
