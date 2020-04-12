@@ -15,7 +15,7 @@ import socketIO from "socket.io-client"
 
 import { API_URL, WS_URL } from './paths'
 
-var INEGLEIT_ICON_DURATION = 3000 // ms
+var INEGLEIT_ICON_DURATION = 2000 // ms
 
 class App extends Component {
   constructor() {
