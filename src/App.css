@@ -126,6 +126,21 @@ div.sidebar-player-list {
   cursor: pointer;
 }
 
+.dynamite {
+  text-align: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  vertical-align: middle;
+  float: right;
+  font-size: 25px;
+}
+
+.dynamite:hover {
+  background-color: lightcoral;
+  cursor: pointer;
+}
+
 div.inegleit {
   display: block;
   background-image: url("static/design2_by_lara.png");
@@ -146,4 +161,8 @@ div.inegleit {
 
 .message-time {
   float: right;
+}
+
+.notification {
+  max-width: 200px;
 }

@@ -66,11 +66,17 @@ export class Lobby extends Component {
   render() {
     return (
       <div className="container lobby">
-        <OtherPlayers playerList={this.state.players} turn={this.state.turn} king={this.props.king} kickPlayer={this.props.kickPlayer}/>
+        <OtherPlayers 
+          playerList={this.state.players} 
+          turn={this.state.turn} 
+          player={this.props.player} 
+          loggedIn={this.props.loggedIn}
+          insultPlayer={this.props.insultPlayer}
+          kickPlayer={this.props.kickPlayer}/>
         <ChatLog 
           messages={this.state.messages} 
           onSubmit={this.sendMessage} 
-          playerHasRegistered={this.props.player !== ""}
+          playerHasRegistered={this.props.player.name !== ""}
         />
       </div>
     )

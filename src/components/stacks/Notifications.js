@@ -8,7 +8,7 @@ export class Notifications extends Component {
 
   render() {
     return (
-      this.props.notifications.map( notification => <p>{notification}</p> )
+      this.props.notifications.map( notification => <p className="notification">{notification}</p> )
     )
   }
 }
