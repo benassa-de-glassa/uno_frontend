@@ -39,7 +39,7 @@ export class Lobby extends Component {
         }
       })
 
-      this.socket.on('message', data => this.addMessage(data.message))
+      this.socket.on('message', data => {this.addMessage(data.message); console.log(data.message)})
     }
   }
 
