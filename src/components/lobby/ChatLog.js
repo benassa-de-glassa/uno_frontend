@@ -13,7 +13,6 @@ export class ChatLog extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.onEnterKey = this.onEnterKey.bind(this)
-    this.scrollToBottom = this.scrollToBottom.bind(this)
   }
 
   handleChange(event) {
@@ -30,24 +29,21 @@ export class ChatLog extends Component {
       this.handleSubmit()
     }
   }
-
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
-  }
   
   componentDidMount() {
     this.scrollToBottom()
   }
 
   componentDidUpdate() {
-    this.scrollToBottom()
+    var objDiv = document.getElementById("chatbox");
+    objDiv.scrollTop = objDiv.scrollHeight;
   }
 
   render() {
     return (
       <div className="container m-0 p-0">
         <p className="m-0"><strong>Chat</strong></p>
-        <div className="chatbox container p-0 my-0">
+        <div id="chatbox" className="chatbox container p-0 my-0">
           { this.props.messages.map(msg => {
             if (this.state.showServerLog && (msg.sender === "server")) {
               return(
