@@ -39,7 +39,7 @@ export class Lobby extends Component {
         }
       })
 
-      this.socket.on('message', data => this.addMessage(data.message))
+      this.socket.on('message', data => {this.addMessage(data.message); console.log(data.message)})
     }
   }
 
@@ -56,7 +56,7 @@ export class Lobby extends Component {
   async sendMessage(message) {
     var url = new URL(API_URL);
     url.pathname += "lobby/send_message" 
-    url.searchParams.append("player_name", this.props.player)
+    url.searchParams.append("player_name", this.props.player.name)
 
     url.searchParams.append("client_message", message)
 
